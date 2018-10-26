@@ -1,4 +1,4 @@
-./crlr-commons/target
+crlr-commons/target*
 application/properties/configMigration.properties
 application/properties/config.properties
 application/properties/correspondanceBDUAI.properties
