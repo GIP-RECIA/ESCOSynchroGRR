@@ -1,6 +1,0 @@
-db.migration.driver=com.mysql.jdbc.Driver
-db.migration.urlStart=jdbc:mysql://condor.giprecia.net/
-# User
-db.migration.user=grr_cfa
-# Password
-db.migration.password=AGRRdtlCFA2RC
