@@ -1,11 +1,25 @@
-crlr-commons/target/
-*/build/
-*/log
-dist/
-application/properties/configMigration.properties
-application/properties/config.properties
-application/properties/correspondanceBDUAI.properties
-application/properties/log4j.properties
-application/properties/regroupementEtablissements.properties
-dateDerniereModif.txt
+/target/
+!.mvn/wrapper/maven-wrapper.jar
 
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
