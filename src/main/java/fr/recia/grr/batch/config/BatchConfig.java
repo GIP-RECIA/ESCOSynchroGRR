@@ -13,6 +13,7 @@ import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
 import fr.recia.grr.batch.synchronisation.mapper.GrrUtilisateurRowMapper;
 import fr.recia.grr.batch.tasklet.ReservationAncienneTasklet;
+import fr.recia.grr.batch.tasklet.ViderLogTasklet;
 import fr.recia.grr.batch.writer.WriterMisAjourEtablissement;
 import fr.recia.grr.batch.writer.WriterMisAjourPersonne;
 import fr.recia.grr.batch.writer.WriterSuppressionComptesAbsentsLDAP;
@@ -102,6 +103,7 @@ public class BatchConfig {
                       Step misAjourPersonnes,
                       Step suppressionComptesAbsentsLDAP,
                       Step suppressionReservationAnciennes,
+                      Step nettoyageLog,
                       Step endBatch)  {
 
 
@@ -111,6 +113,7 @@ public class BatchConfig {
                 .next(misAjourPersonnes).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(suppressionComptesAbsentsLDAP).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(suppressionReservationAnciennes).on(FlowExecutionStatus.FAILED.getName()).end()
+                .next(nettoyageLog).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(endBatch)
                 .build().build();
     }
@@ -266,6 +269,28 @@ public class BatchConfig {
                 .listener(listener)
                 .build();
     }
+
+
+    /*
+     * ===============================================
+     * Step 5: Vider logs
+     * ===============================================
+     */
+
+    @Bean
+    public ViderLogTasklet viderLogTasklet(){
+        return new ViderLogTasklet();
+    }
+
+
+    @Bean
+    public Step nettoyageLog(ExecutionListenerStep listener){
+        return stepBuilderFactory.get("nettoyageLog")
+                .tasklet(viderLogTasklet())
+                .listener(listener)
+                .build();
+    }
+
 
 
     @Bean
