@@ -12,6 +12,7 @@ import fr.recia.grr.batch.synchronisation.entity.dao.GrrUtilisateurs;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
 import fr.recia.grr.batch.synchronisation.mapper.GrrUtilisateurRowMapper;
+import fr.recia.grr.batch.tasklet.ReservationAncienneTasklet;
 import fr.recia.grr.batch.writer.WriterMisAjourEtablissement;
 import fr.recia.grr.batch.writer.WriterMisAjourPersonne;
 import fr.recia.grr.batch.writer.WriterSuppressionComptesAbsentsLDAP;
@@ -100,6 +101,7 @@ public class BatchConfig {
                       Step misAjourEtablissement,
                       Step misAjourPersonnes,
                       Step suppressionComptesAbsentsLDAP,
+                      Step suppressionReservationAnciennes,
                       Step endBatch)  {
 
 
@@ -108,6 +110,7 @@ public class BatchConfig {
                 .listener(listener).start(misAjourEtablissement).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(misAjourPersonnes).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(suppressionComptesAbsentsLDAP).on(FlowExecutionStatus.FAILED.getName()).end()
+                .next(suppressionReservationAnciennes).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(endBatch)
                 .build().build();
     }
@@ -242,6 +245,27 @@ public class BatchConfig {
     }
 
 
+
+    /*
+     * ===============================================
+     * Step 4: Suppression des reservations trops anciennes
+     * ===============================================
+     */
+
+
+    @Bean
+    public ReservationAncienneTasklet reservationAncienneTasklet(){
+        return new ReservationAncienneTasklet();
+    }
+
+    @Bean
+    public Step suppressionReservationAnciennes(ExecutionListenerStep listener){
+
+        return stepBuilderFactory.get("suppressionReservationAnciennes")
+                .tasklet(reservationAncienneTasklet())
+                .listener(listener)
+                .build();
+    }
 
 
     @Bean
