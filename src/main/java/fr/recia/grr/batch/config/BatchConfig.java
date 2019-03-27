@@ -3,10 +3,15 @@ package fr.recia.grr.batch.config;
 import fr.recia.grr.batch.listener.ExecutionListenerJob;
 import fr.recia.grr.batch.listener.ExecutionListenerStep;
 import fr.recia.grr.batch.processor.ProcessorMisAJourEtablissement;
+import fr.recia.grr.batch.processor.ProcessorMisAJourPersonne;
 import fr.recia.grr.batch.reader.ReaderDAOAllEtablissement;
+import fr.recia.grr.batch.reader.ReaderDAOAllPersonnes;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissement;
+import fr.recia.grr.batch.synchronisation.entity.dao.GrrUtilisateurs;
+import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
 import fr.recia.grr.batch.writer.WriterMisAjourEtablissement;
+import fr.recia.grr.batch.writer.WriterMisAjourPersonne;
 import fr.recia.grr.utils.DateBatch;
 import fr.recia.grr.utils.DateDerniereMiseAJourLoader;
 import org.slf4j.Logger;
@@ -84,12 +89,15 @@ public class BatchConfig {
    @Bean
     public Job config(ExecutionListenerJob listener,
                       Step misAjourEtablissement,
+                      Step misAjourPersonnes,
                       Step endBatch)  {
 
 
         return jobBuilderFactory.get("Syncro")
                 .incrementer(new RunIdIncrementer())
-                .listener(listener).start(misAjourEtablissement).on(FlowExecutionStatus.FAILED.getName()).end().next(endBatch)
+                .listener(listener).start(misAjourEtablissement).on(FlowExecutionStatus.FAILED.getName()).end()
+                .next(misAjourPersonnes).on(FlowExecutionStatus.FAILED.getName()).end()
+                .next(endBatch)
                 .build().build();
     }
 
@@ -125,7 +133,38 @@ public class BatchConfig {
     }
 
 
+    /*
+     * ===============================================
+     * Step 2: Mis a jour des utilisateurs et des administrateurs
+     * ===============================================
+     */
 
+    @Bean
+    public ReaderDAOAllPersonnes misAJourPersonnesReader(){
+        return new ReaderDAOAllPersonnes(dateBatch);
+    }
+
+    @Bean
+    public ProcessorMisAJourPersonne misAJourPersonnesProcessor(){
+        return new ProcessorMisAJourPersonne();
+    }
+
+    @Bean
+    public WriterMisAjourPersonne misAJourPersonnesWriter(){
+        return new WriterMisAjourPersonne();
+    }
+
+    @Bean
+    public Step misAjourPersonnes(ExecutionListenerStep listener){
+
+        return stepBuilderFactory.get("misAjourPersonnes")
+                .<ODMPersonne, GrrUtilisateurs> chunk(1)
+                .reader(misAJourPersonnesReader())
+                .processor( misAJourPersonnesProcessor())
+                .writer(misAJourPersonnesWriter())
+                .listener(listener)
+                .build();
+    }
 
 
     @Bean
