@@ -39,3 +39,7 @@ Caused by: java.io.FileNotFoundException: class path resource [regroupementEtabl
 2019-03-27 09:25:44,229 [DEBUG] fr.recia.grr.MetierApplication - Running with Spring Boot v2.1.1.RELEASE, Spring v5.1.3.RELEASE
 2019-03-27 09:25:44,230 [INFO ] fr.recia.grr.MetierApplication - No active profile set, falling back to default profiles: default
 2019-03-27 09:25:46,641 [INFO ] fr.recia.grr.MetierApplication - Started MetierApplication in 2.769 seconds (JVM running for 3.932)
+2019-03-27 10:51:39,020 [INFO ] fr.recia.grr.MetierApplication - Starting MetierApplication on GFI302151 with PID 24232 (E:\RECIA\ESCOSynchroGRR\target\classes started by FRUP69169 in E:\RECIA\ESCOSynchroGRR)
+2019-03-27 10:51:39,030 [DEBUG] fr.recia.grr.MetierApplication - Running with Spring Boot v2.1.1.RELEASE, Spring v5.1.3.RELEASE
+2019-03-27 10:51:39,030 [INFO ] fr.recia.grr.MetierApplication - No active profile set, falling back to default profiles: default
+2019-03-27 10:51:43,168 [INFO ] fr.recia.grr.MetierApplication - Started MetierApplication in 4.526 seconds (JVM running for 5.969)
