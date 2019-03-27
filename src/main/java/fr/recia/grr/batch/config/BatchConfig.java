@@ -4,14 +4,17 @@ import fr.recia.grr.batch.listener.ExecutionListenerJob;
 import fr.recia.grr.batch.listener.ExecutionListenerStep;
 import fr.recia.grr.batch.processor.ProcessorMisAJourEtablissement;
 import fr.recia.grr.batch.processor.ProcessorMisAJourPersonne;
+import fr.recia.grr.batch.processor.ProcessorSuppressionComptesAbsentsLDAP;
 import fr.recia.grr.batch.reader.ReaderDAOAllEtablissement;
 import fr.recia.grr.batch.reader.ReaderDAOAllPersonnes;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissement;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrUtilisateurs;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
+import fr.recia.grr.batch.synchronisation.mapper.GrrUtilisateurRowMapper;
 import fr.recia.grr.batch.writer.WriterMisAjourEtablissement;
 import fr.recia.grr.batch.writer.WriterMisAjourPersonne;
+import fr.recia.grr.batch.writer.WriterSuppressionComptesAbsentsLDAP;
 import fr.recia.grr.utils.DateBatch;
 import fr.recia.grr.utils.DateDerniereMiseAJourLoader;
 import org.slf4j.Logger;
@@ -23,16 +26,22 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.Optional;
 import java.util.TimeZone;
@@ -90,6 +99,7 @@ public class BatchConfig {
     public Job config(ExecutionListenerJob listener,
                       Step misAjourEtablissement,
                       Step misAjourPersonnes,
+                      Step suppressionComptesAbsentsLDAP,
                       Step endBatch)  {
 
 
@@ -97,6 +107,7 @@ public class BatchConfig {
                 .incrementer(new RunIdIncrementer())
                 .listener(listener).start(misAjourEtablissement).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(misAjourPersonnes).on(FlowExecutionStatus.FAILED.getName()).end()
+                .next(suppressionComptesAbsentsLDAP).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(endBatch)
                 .build().build();
     }
@@ -165,6 +176,72 @@ public class BatchConfig {
                 .listener(listener)
                 .build();
     }
+
+    /*
+     * ===============================================
+     * Step 3: Suppression des comptes absents du ldap
+     * ===============================================
+     */
+    @Value("${derniereConnexionDepuisNJour}")
+    private int jourRequisConnexion;
+
+    @Autowired
+    @Qualifier( "dataSource")
+    private DataSource dataSource;
+
+    @Value("${statusAdmin}")
+    private String statusAdmin;
+
+
+
+    @Bean
+    public JdbcCursorItemReader<String> suppressionComptesNjoursReader(){
+
+        LocalDateTime dateActuel= LocalDateTime.now();
+        LocalDateTime dateRequis=dateActuel.minus(jourRequisConnexion, ChronoUnit.DAYS);
+
+        JdbcCursorItemReader<String> itemReader = new JdbcCursorItemReader<>();
+        itemReader.setDataSource(dataSource);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("select distinct  grr_utilisateurs.login from grr_utilisateurs ");
+        stringBuilder.append("left outer join grr_log on grr_log.LOGIN = grr_utilisateurs.login ");
+        stringBuilder.append("where (grr_log.start is null OR grr_log.start <  '");
+        stringBuilder.append(dateRequis);
+        stringBuilder.append("') ");
+        stringBuilder.append("and grr_utilisateurs.source = 'ext' ");
+        stringBuilder.append("and grr_utilisateurs.statut != '");
+        stringBuilder.append(statusAdmin);
+        stringBuilder.append("'");
+        itemReader.setSql(stringBuilder.toString());
+        itemReader.setRowMapper(new GrrUtilisateurRowMapper());
+        return   itemReader;
+
+    }
+
+
+    @Bean
+    public WriterSuppressionComptesAbsentsLDAP suppressionComptesAbsentsLDAPWriter(){
+        return new WriterSuppressionComptesAbsentsLDAP();
+    }
+    @Bean
+    public ProcessorSuppressionComptesAbsentsLDAP processorSuppressionComptesAbsentsLDAP(){
+        return new ProcessorSuppressionComptesAbsentsLDAP();
+    }
+
+    @Bean
+    public Step suppressionComptesAbsentsLDAP(ExecutionListenerStep listener){
+
+        return stepBuilderFactory.get("suppressionComptesAbsentsLDAP")
+                .<String, String> chunk(1)
+                .reader(suppressionComptesNjoursReader())
+                .processor(processorSuppressionComptesAbsentsLDAP())
+                .writer(suppressionComptesAbsentsLDAPWriter())
+                .listener(listener)
+                .build();
+    }
+
+
 
 
     @Bean
