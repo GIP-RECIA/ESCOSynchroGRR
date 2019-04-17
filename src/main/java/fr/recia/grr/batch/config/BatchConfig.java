@@ -142,6 +142,9 @@ public class BatchConfig {
 
         return stepBuilderFactory.get("misAjourEtablissement")
                 .<ODMStructure, GrrEtablissement> chunk(1)
+                .faultTolerant()
+                .skip(BatchSyncroException.class)
+                .skipLimit(100000)
                 .reader(misAJourEtablissementReader())
                 .processor( misAJourEtablissementProcessor())
                 .writer(misAJourEtablissementWriter())
@@ -176,6 +179,9 @@ public class BatchConfig {
 
         return stepBuilderFactory.get("misAjourPersonnes")
                 .<ODMPersonne, GrrUtilisateurs> chunk(1)
+                .faultTolerant()
+                .skip(BatchSyncroException.class)
+                .skipLimit(100000)
                 .reader(misAJourPersonnesReader())
                 .processor( misAJourPersonnesProcessor())
                 .writer(misAJourPersonnesWriter())

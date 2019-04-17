@@ -1,5 +1,6 @@
 package fr.recia.grr.batch.processor;
 
+import fr.recia.grr.batch.config.BatchSyncroException;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissement;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrUtilisateurs;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
@@ -11,6 +12,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -49,16 +51,36 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
     @Value("${etablissementPrincipal}")
     private String etablissementPrincipal;
 
+    @Value("${emailParDefaut}")
+    private String emailParDefaut;
+
     /*
      * ===============================================
      * synchronisation des données de ldap avec la base de donnée
      * ===============================================
      */
+    private void validate(ODMPersonne odmPersonne) throws BatchSyncroException {
+        if (odmPersonne.getUid()==null){
+            throw new BatchSyncroException("odmPersonne.getCode est null");
+        }
+        if (odmPersonne.getEmail()==null && (emailParDefaut ==null || emailParDefaut.isEmpty()) ){
+            throw new BatchSyncroException("odmPersonne.getEmail et emailParDefaut sont null");
+        }
+        if (odmPersonne.getDefaultEtablissement()==null){
+            throw new BatchSyncroException("odmPersonne.getDefaultEtablissement est null");
+        }
+        if (odmPersonne.getNom()==null){
+            throw new BatchSyncroException("odmPersonne.getNom est null");
+        }
+        if (odmPersonne.getPrenom()==null){
+            throw new BatchSyncroException("odmPersonne.getPrenom est null");
+        }
 
+    }
     @Override
-    public GrrUtilisateurs process(ODMPersonne odmPpersonne) throws Exception {
+    public GrrUtilisateurs process(ODMPersonne odmPpersonne) throws IOException,BatchSyncroException {
         log.info("Debut Process pour l'utilisateur : ".concat(odmPpersonne.getUid()));
-
+        validate(odmPpersonne);
         Optional<GrrUtilisateurs> user = utilisateursRepositoryDAO.findById(odmPpersonne.getUid());
         //RG-4	Etablissement principal de l’utilisateur
         Pattern p5 = Pattern.compile(etablissementPrincipal);
@@ -158,12 +180,15 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
                         grrUtilisateurs.getGrr_j_user_etablissement().add(value);
                         grrUtilisateurs.getGrr_j_user_etablissement().addAll(principal);
                     }
-                },() ->  log.error("Le code etablissement detecté est introuvable en base - Code : ".concat(finalCodeEtablissement)));
+                },() -> {
+                    log.error("Le code etablissement detecté est introuvable en base - Code : ".concat(finalCodeEtablissement));
+                });
             }
         }
 
         if(!gotEtabl) {
             log.error("Aucun code etablissement detecté Login : ".concat(odmPpersonne.getUid()));
+            return null;
         }
 
         log.info("Fin Process pour l'utilisateur : ".concat(odmPpersonne.getUid()));
@@ -173,7 +198,7 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
     private GrrUtilisateurs updateUtilisateur(GrrUtilisateurs user, ODMPersonne odmPpersonne) {
         user.setNom(odmPpersonne.getNom());
         user.setPrenom(odmPpersonne.getPrenom());
-        user.setEmail(odmPpersonne.getEmail());
+        user.setEmail(odmPpersonne.getEmail() == null ? emailParDefaut : odmPpersonne.getEmail());
         user.setStatut("utilisateur");
         user.setEtat("actif");
         Optional<GrrEtablissement> grrEtablissement = etablissementServiceDAO.findByCode(odmPpersonne.getDefaultEtablissement());

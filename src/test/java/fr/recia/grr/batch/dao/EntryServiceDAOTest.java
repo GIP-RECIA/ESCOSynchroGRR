@@ -43,6 +43,4 @@ public class EntryServiceDAOTest {
         Assert.assertEquals(pers.size(),2);
     }
 
-
-
 }

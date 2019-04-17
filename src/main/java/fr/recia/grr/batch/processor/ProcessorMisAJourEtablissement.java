@@ -1,5 +1,6 @@
 package fr.recia.grr.batch.processor;
 
+import fr.recia.grr.batch.config.BatchSyncroException;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrArea;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissement;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissementRegroupement;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -48,10 +50,22 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
      * ===============================================
      */
 
-    @Override
-    public GrrEtablissement process(ODMStructure odmStructure) throws Exception {
-        log.info("Debut Process pour l'établissement : ".concat(odmStructure.getCode()));
+    private void validate(ODMStructure odmStructure) throws BatchSyncroException {
+        if (odmStructure.getNomCourt()==null){
+            throw new BatchSyncroException("odmStructure.getCode est null");
+        }
+        if (odmStructure.getNomLong()==null){
+            throw new BatchSyncroException("odmStructure.getNomLong est null");
+        }
+        if (odmStructure.getSitename()==null){
+            throw new BatchSyncroException("odmStructure.getSitename est null");
+        }
+    }
 
+    @Override
+    public GrrEtablissement process(ODMStructure odmStructure) throws IOException,BatchSyncroException {
+        log.info("Debut Process pour l'établissement : ".concat(odmStructure.getCode()));
+        validate(odmStructure);
         Optional<GrrEtablissement> etabDB=etablissementServiceDAO.findByCode(odmStructure.getCode());
 
 
