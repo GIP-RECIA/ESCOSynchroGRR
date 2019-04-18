@@ -217,8 +217,8 @@ public class BatchConfig {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("select distinct  grr_utilisateurs.login from grr_utilisateurs ");
-        stringBuilder.append("left outer join grr_log on grr_log.LOGIN = grr_utilisateurs.login ");
-        stringBuilder.append("where (grr_log.start is null OR grr_log.start <  '");
+        stringBuilder.append("left outer join (select lg.login , max(lg.start) as start from grr_log lg group by login) as log on log.LOGIN = grr_utilisateurs.login ");
+        stringBuilder.append("where (log.start is null OR log.start <  '");
         stringBuilder.append(dateRequis);
         stringBuilder.append("') ");
         stringBuilder.append("and grr_utilisateurs.source = 'ext' ");
