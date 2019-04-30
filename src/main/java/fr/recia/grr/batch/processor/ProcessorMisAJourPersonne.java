@@ -114,17 +114,30 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         Pattern p4 = Pattern.compile(statutAdminEtablissement);
 
         boolean gotEtabl = false;
-        for (String s:odmPpersonne.getIsMemberOf()) {
-            boolean isAdmin = false;
-            boolean isAdminEtablissement = false;
-            boolean isUtilisateur = false;
-            String codeEtablissement = null;
+        boolean isAdmin = false;
 
+        for (String s:odmPpersonne.getIsMemberOf()) {
             if (p.matcher(s).matches()) {
                 isAdmin=true;
                 log.info("Detection d'un statut admin :  admin:GRR:central ");
                 grrUtilisateurs.setStatut("isAdmin");
             }
+        }
+        /*
+            Retirer des tables grr_j_user_etablissement et grr_j_useradmin_etablissement les enregistrements concernant l’utilisateur.
+           */
+        if(!isAdmin){
+            log.info("L'utilisateur ne possede pas le statut admin");
+            grrUtilisateurs.getGrr_j_useradmin_etablissement().clear();
+            grrUtilisateurs.getGrr_j_user_etablissement().clear();
+        }
+
+        for (String s:odmPpersonne.getIsMemberOf()) {
+            boolean isAdminEtablissement = false;
+            boolean isUtilisateur = false;
+            String codeEtablissement = null;
+
+
             if (p4.matcher(s).matches()) {
                 log.info("Detection d'un statut utilisateur :  admin:GRR:local ");
                 isAdminEtablissement = true;
@@ -146,8 +159,7 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
                 Optional<GrrEtablissement> grrEtablissement = etablissementServiceDAO.findByCode(codeEtablissement);
                 boolean finalIsAdminEtablissement = isAdminEtablissement;
                 boolean finalIsUtilisateur = isUtilisateur;
-                boolean finalIsAdmin = isAdmin;
-                String finalCodeEtablissement = codeEtablissement;
+                 String finalCodeEtablissement = codeEtablissement;
                 grrEtablissement.ifPresentOrElse(value -> {
 
                 // Recuperer letablissmeent principal - Effectuer également l’opération avec l’établissement principal associé à l’établissement en cours s’il existe (RG-7).
@@ -156,13 +168,7 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
 
                     principal.forEach(grrEtablissement1 -> log.info("Detection d'un établissement principal - Code: ".concat(grrEtablissement1.getCode())));
 
-                     /*
-                        Retirer des tables grr_j_user_etablissement et grr_j_useradmin_etablissement les enregistrements concernant l’utilisateur.
-                         */
-                    if(!finalIsAdmin){
-                        grrUtilisateurs.getGrr_j_useradmin_etablissement().clear();
-                        grrUtilisateurs.getGrr_j_user_etablissement().clear();
-                    }
+
 
                      /*
                 grr_j_useradmin_etablissement

@@ -44,7 +44,7 @@ public class EtablissementServiceDAOTest {
     public void test1GetAllEtablissements(){
         List<GrrEtablissement> etablissements=etablissementServiceDAO.findAll();
         Assert.assertNotNull(etablissements);
-        Assert.assertEquals(etablissements.size(),2);
+        Assert.assertEquals(etablissements.size(),3);
     }
 
     @Test
