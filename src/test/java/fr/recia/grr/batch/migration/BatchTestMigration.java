@@ -1,8 +1,11 @@
 package fr.recia.grr.batch.migration;
 
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.batch.core.BatchStatus;
+import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,10 +26,12 @@ public class BatchTestMigration {
 	@Test
 	@Sql("/multiEtablissement_init.sql")
 	public void testMigration() throws Exception {
-	
-		jobLauncherTestUtils.launchStep("migrationRoom");
 
-		System.out.println("Step1 Ok");
+		JobExecution migrationRoom = jobLauncherTestUtils.launchStep("migrationRoom");
+		Assert.assertEquals(BatchStatus.COMPLETED, migrationRoom.getStatus());
+		Assert.assertEquals(2, migrationRoom.getStepExecutions().iterator().next().getReadCount());
+		Assert.assertEquals(2, migrationRoom.getStepExecutions().iterator().next().getWriteCount());
+
 	}
 
 }
