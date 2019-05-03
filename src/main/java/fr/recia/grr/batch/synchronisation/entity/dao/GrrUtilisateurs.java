@@ -73,6 +73,12 @@ public class GrrUtilisateurs implements Serializable {
     private Set<GrrArea> grr_j_user_area;
 
     @ManyToMany
+    @JoinTable(name ="grr_j_user_room",
+            joinColumns = @JoinColumn(name = "login"),
+            inverseJoinColumns = @JoinColumn(name = "id_room"))
+    private Set<GrrRoom> grr_j_user_room;
+
+    @ManyToMany
     @JoinTable(name ="grr_j_useradmin_area",
             joinColumns = @JoinColumn(name = "login"),
             inverseJoinColumns = @JoinColumn(name = "id_area"))
@@ -463,6 +469,14 @@ public class GrrUtilisateurs implements Serializable {
 
     public Set<GrrSite> getGrr_j_useradmin_site() {
         return grr_j_useradmin_site;
+    }
+
+    public Set<GrrRoom> getGrr_j_user_room() {
+        return grr_j_user_room;
+    }
+
+    public void setGrr_j_user_room(Set<GrrRoom> grr_j_user_room) {
+        this.grr_j_user_room = grr_j_user_room;
     }
 
     public void setGrr_j_useradmin_site(Set<GrrSite> grr_j_useradmin_site) {
