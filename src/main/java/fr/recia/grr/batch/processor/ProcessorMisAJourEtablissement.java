@@ -133,14 +133,18 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
 
     private GrrSite createSite(GrrSite grrSite, ODMStructure odmStructure) {
         grrSite.setSitecode(odmStructure.getSitecode());
-        grrSite.setSitename(odmStructure.getSitename());
+        grrSite.setSitename(sanitizeName(odmStructure.getSitename(),50));
         return grrSite;
+    }
+
+    private String sanitizeName(String name, int lenght){
+        return name.substring(0,(name.length() < lenght)? name.length():lenght);
     }
 
     private GrrEtablissement updateEtablissement(GrrEtablissement obj, ODMStructure odmStructure) {
         obj.setCode(odmStructure.getCode());
-        obj.setShortname(odmStructure.getNomCourt().substring(0,(odmStructure.getNomCourt().length() < 30)? odmStructure.getNomCourt().length():30));
-        obj.setName(odmStructure.getSitename());
+        obj.setShortname(sanitizeName(odmStructure.getNomCourt(),30));
+        obj.setName(sanitizeName(odmStructure.getSitename(),50));
         obj.setAdresse(odmStructure.getAdresse());
         obj.setVille(odmStructure.getVille());
         obj.setCodepostal(odmStructure.getCodePostal());
