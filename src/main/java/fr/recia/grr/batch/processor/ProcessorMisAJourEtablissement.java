@@ -6,6 +6,7 @@ import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissement;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrEtablissementRegroupement;
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrSite;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
+import fr.recia.grr.batch.synchronisation.repository.dao.IEtablissementRegroupementRepositoryDAO;
 import fr.recia.grr.batch.synchronisation.repository.dao.IEtablissementRepositoryDAO;
 import fr.recia.grr.utils.RegroupementEtablissementLoader;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructure, GrrEtablissement> {
@@ -30,6 +32,9 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
 
     @Autowired
     private IEtablissementRepositoryDAO etablissementServiceDAO;
+
+    @Autowired
+    private IEtablissementRegroupementRepositoryDAO etablissementRegroupementRepositoryDAO;
 
     @Value("${createSiteOnCreateEtab:#{null}}")
     private Boolean createSiteOnCreateEtab;
@@ -99,13 +104,26 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
         /*
         •	Retirer de la table grr_etablissement_regroupement les enregistrements concernant l’établissement.
         */
-        grrEtablissement.getEtablissements_principal().clear();
+        log.info("Traitement des regroupements  Principal : ".concat(String.valueOf(grrEtablissement.getEtablissements_principal().size())).concat(" Secondaires : ").concat(String.valueOf(grrEtablissement.getEtablissements_secondaire().size())));
+
+      //  grrEtablissement.removeAllEtablissements_principal();
+       // grrEtablissement.removeAllEtablissements_secondaire();
+        etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_principal(grrEtablissement.getCode());
+        etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_secondaire(grrEtablissement.getCode());
         grrEtablissement.getEtablissements_secondaire().clear();
+        grrEtablissement.getEtablissements_principal().clear();
         /*
             Si l’établissement possède un établissement principal (RG-11), créer le regroupement entre ces 2 établissements dans la table grr_etablissement_regroupement         */
         Optional<String> codePrincipal = RegroupementEtablissementLoader.loadPrincipal(resourceLoader, grrEtablissement.getCode());
         codePrincipal.ifPresent(s -> grrEtablissement.getEtablissements_principal().add(new GrrEtablissementRegroupement(s,grrEtablissement.getCode())));
         codePrincipal.ifPresent(s -> log.info("l’établissement possède un établissement principal, Creation d'un regroupement - Code etablissement principal : " .concat(s)));
+
+        List<String> codeSecondare = RegroupementEtablissementLoader.loadSecondaires(resourceLoader, grrEtablissement.getCode());
+        codeSecondare.forEach(s -> grrEtablissement.getEtablissements_secondaire().add(new GrrEtablissementRegroupement(grrEtablissement.getCode(),s)));
+        codeSecondare.forEach(s -> log.info("l’établissement possède un établissement secondaire, Creation d'un regroupement - Code etablissement secondaire : " .concat(s)));
+
+        log.info("Fin Traitement des regroupements  Principal : ".concat(String.valueOf(grrEtablissement.getEtablissements_principal().size())).concat(" Secondaires : ").concat(String.valueOf(grrEtablissement.getEtablissements_secondaire().size())));
+
         return grrEtablissement;
     }
 

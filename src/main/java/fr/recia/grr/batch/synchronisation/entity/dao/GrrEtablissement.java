@@ -57,13 +57,13 @@ public class GrrEtablissement implements Serializable {
     private Set<GrrUtilisateurs> grr_j_etablissement_user;
 
 
-    @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name="code_etablissement_secondaire", referencedColumnName="code")
     })
     private Set<GrrEtablissementRegroupement> etablissements_principal;
 
-    @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(fetch=FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name="code_etablissement_principal", referencedColumnName="code")
     })
@@ -84,7 +84,14 @@ public class GrrEtablissement implements Serializable {
     private Set<GrrTypeArea> grr_j_etablissement_type_area;
 
 
-
+    public void removeAllEtablissements_principal() {
+        etablissements_principal.forEach(order -> order.setCode_etablissement_principal(null));
+        this.etablissements_principal.clear();
+    }
+    public void removeAllEtablissements_secondaire() {
+        etablissements_secondaire.forEach(order -> order.setCode_etablissement_secondaire(null));
+        this.etablissements_secondaire.clear();
+    }
 
     /*
      * ===============================================
@@ -102,6 +109,7 @@ public class GrrEtablissement implements Serializable {
         etablissements_principal = new HashSet<>();
         etablissements_secondaire = new HashSet<>();
         grrJEtablissementCalendars = new HashSet<>();
+        grr_j_etablissement_type_area = new HashSet<>();
     }
 
     /**
@@ -122,6 +130,7 @@ public class GrrEtablissement implements Serializable {
      * Getter / Setter de la classe
      * ===============================================
      */
+
 
     public Set<GrrEtablissementRegroupement> getEtablissements_principal() {
         return etablissements_principal;

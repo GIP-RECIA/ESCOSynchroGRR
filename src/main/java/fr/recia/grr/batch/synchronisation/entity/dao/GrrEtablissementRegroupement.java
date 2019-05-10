@@ -9,11 +9,11 @@ import java.io.Serializable;
 public class GrrEtablissementRegroupement implements Serializable {
 
     @Id
-    @Column(name = "code_etablissement_principal")
+    @Column(name = "code_etablissement_principal", nullable = false)
     private String code_etablissement_principal;
 
     @Id
-    @Column(name = "code_etablissement_secondaire")
+    @Column(name = "code_etablissement_secondaire",nullable = false)
     private String code_etablissement_secondaire;
 
 

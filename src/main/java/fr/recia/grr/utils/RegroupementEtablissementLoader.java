@@ -4,8 +4,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.Properties;
+import java.util.*;
 
 public class RegroupementEtablissementLoader {
     public static Properties load(ResourceLoader resourceLoader) throws IOException {
@@ -19,5 +18,15 @@ public class RegroupementEtablissementLoader {
         Properties load = load(resourceLoader);
         String uaiPrincipal = load.getProperty(codeSecondaire+".principal");
         return Optional.ofNullable(uaiPrincipal);
+    }
+    public static List<String> loadSecondaires(ResourceLoader resourceLoader, String codePrincipal) throws IOException {
+        ArrayList<String> secondaires = new ArrayList<>();
+        Properties load = load(resourceLoader);
+        for (Map.Entry<Object, Object> entry : load.entrySet()) {
+            if(codePrincipal.equals(entry.getValue())){
+                secondaires.add(entry.getKey().toString().replace(".principal",""));
+            }
+        }
+        return secondaires;
     }
 }

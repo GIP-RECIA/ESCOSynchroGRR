@@ -11,6 +11,7 @@ delete from grr_j_user_area;
 delete from grr_j_site_area;
 delete from grr_j_user_room;
 delete from grr_j_mailuser_room;
+delete from grr_etablissement_regroupement;
 
 commit ;
 INSERT INTO grr_utilisateurs (login, nom, prenom, password, email, statut, etat, default_site, default_area, default_etablissement, default_room, default_style, default_list_type, default_language, source) VALUES('F08001j5', 'Juliana', 'FLORENCE', '', 'FLORENCE.Juliana@domaine.fr', 'utilisateur', 'actif', 0, 0, 2, 0, '', '', '', 'ext');
@@ -33,5 +34,8 @@ INSERT INTO grr_j_user_area (`id_area`,`login`) VALUES ('1','F08001j5');
 INSERT INTO grr_j_site_area (`id_area`,`id_site`) VALUES ('1','1');
 INSERT INTO grr_j_user_room (`id_room`,`login`) VALUES ('1','F08001j5');
 INSERT INTO grr_j_mailuser_room (`id_room`,`login`) VALUES ('1','F08001j5');
+
+
+INSERT INTO grr_etablissement_regroupement (`code_etablissement_secondaire`,`code_etablissement_principal`) VALUES ('0290009C','0450822X');
 
 commit ;
