@@ -66,9 +66,6 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         if (odmPersonne.getEmail()==null && (emailParDefaut ==null || emailParDefaut.isEmpty()) ){
             throw new BatchSyncroException("odmPersonne.getEmail et emailParDefaut sont null");
         }
-        if (odmPersonne.getDefaultEtablissement()==null){
-            throw new BatchSyncroException("odmPersonne.getDefaultEtablissement est null");
-        }
         if (odmPersonne.getNom()==null){
             throw new BatchSyncroException("odmPersonne.getNom est null");
         }
@@ -87,12 +84,13 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         for (String s:odmPpersonne.getIsMemberOf()) {
             Matcher matcher = p5.matcher(s);
             while (matcher.find()) {
-                odmPpersonne.setDefaultEtablissement(matcher.group(2));
-                log.info("Detection d'un établissement par defaut : ".concat(matcher.group(2)));
+                odmPpersonne.setDefaultEtablissement(matcher.group(1));
+                log.info("Detection d'un établissement par defaut : ".concat(matcher.group(1)));
             }
         }
-
-
+        if (odmPpersonne.getDefaultEtablissement()==null){
+            throw new BatchSyncroException("odmPersonne.getDefaultEtablissement est null");
+        }
         user.ifPresentOrElse(
                 value -> log.info("Mise a jour de l'utilisateur ID : ".concat(String.valueOf(value.getLogin()))),
                 () -> log.info("Création de l'utilisateur")
@@ -100,9 +98,8 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         GrrUtilisateurs grrUtilisateurs = updateUtilisateur(user.orElse(new GrrUtilisateurs(odmPpersonne.getUid())), odmPpersonne);
 
         if(grrUtilisateurs.getDefault_etablissement()==null){
-            log.error("Le code etablissement detecté pour l'utilisateur ".concat(odmPpersonne.getUid()).concat(" est introuvable en base - Code : ").concat(odmPpersonne.getDefaultEtablissement()));
-            return null;
-        }
+            throw new BatchSyncroException("Le code etablissement detecté pour l'utilisateur ".concat(odmPpersonne.getUid()).concat(" est introuvable en base - Code : ").concat(odmPpersonne.getDefaultEtablissement()));
+         }
 
         /*
         •	Si l’utilisateur possède le statut utilisateur (RG-5),
@@ -168,8 +165,6 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
 
                     principal.forEach(grrEtablissement1 -> log.info("Detection d'un établissement principal - Code: ".concat(grrEtablissement1.getCode())));
 
-
-
                      /*
                 grr_j_useradmin_etablissement
                  */
@@ -178,9 +173,9 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
                         grrUtilisateurs.getGrr_j_useradmin_etablissement().add(value);
                         grrUtilisateurs.getGrr_j_useradmin_etablissement().addAll(principal);
                     }
-                      /*
+                /*
                 grr_j_user_etablissement
-                 */
+                */
                     if(finalIsUtilisateur){
                         log.info("Ajout a user_etablissement");
                         grrUtilisateurs.getGrr_j_user_etablissement().add(value);
@@ -196,6 +191,13 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
             log.error("Aucun code etablissement detecté Login : ".concat(odmPpersonne.getUid()));
             return null;
         }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        grrUtilisateurs.getGrr_j_useradmin_etablissement().forEach(grrEtablissement -> stringBuilder.append(grrEtablissement.getCode().concat(" , ")));
+        log.info(String.format("Listes des etablissement admin {%d%s", grrUtilisateurs.getGrr_j_useradmin_etablissement().size(), "} : ".concat(stringBuilder.toString())));
+        StringBuilder stringBuilder2 = new StringBuilder();
+        grrUtilisateurs.getGrr_j_user_etablissement().forEach(grrEtablissement -> stringBuilder2.append(grrEtablissement.getCode().concat(" , ")));
+        log.info(String.format("Listes des etablissement  {%d%s", grrUtilisateurs.getGrr_j_user_etablissement().size(), "} : ".concat(stringBuilder2.toString())));
 
         log.info("Fin Process pour l'utilisateur : ".concat(odmPpersonne.getUid()));
         return grrUtilisateurs;

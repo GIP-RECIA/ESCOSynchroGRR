@@ -13,15 +13,7 @@ public class DateBatch {
         return lastBatch;
     }
 
-    public void setLastBatch(String lastBatch) {
-        this.lastBatch = lastBatch;
-    }
-
     public String getCurrentBatch() {
         return currentBatch;
-    }
-
-    public void setCurrentBatch(String currentBatch) {
-        this.currentBatch = currentBatch;
     }
 }
