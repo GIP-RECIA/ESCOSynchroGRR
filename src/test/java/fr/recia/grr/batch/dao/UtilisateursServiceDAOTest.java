@@ -40,7 +40,7 @@ public class UtilisateursServiceDAOTest {
     public void testGetAllUsers(){
         List<GrrUtilisateurs>  users=utilisateursServiceDAO.findAll();
         Assert.assertNotNull(users);
-        Assert.assertEquals(users.size(),3);
+        Assert.assertEquals(users.size(),4);
 
     }
 

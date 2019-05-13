@@ -57,7 +57,7 @@ public class SpringLdapIntegrationTest {
     public void testPersonGetRecent() {
         List<ODMPersonne> liste = personneRepository.findPersonnesMigration(queryStructuresPerson, "20150219000000Z");
         assertThat(liste).isNotEmpty();
-        assertThat(liste).size().isEqualTo(5);
+        assertThat(liste).size().isEqualTo(6);
     }
 
     @Test

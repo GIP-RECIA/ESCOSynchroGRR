@@ -351,6 +351,7 @@ isMemberOf: esco:Applications:GRR:FICTIF_0450822X
 isMemberOf: esco:Applications:Cahier_de_texte:FICTIF_0450822X
 isMemberOf: esco:Applications:Espace_Moodle:FICTIF_0450822X
 isMemberOf: esco:admin:GRR:local:FICTIF_0450822X
+isMemberOf: esco:admin:GRR:central
 isMemberOf: esco:admin:sarapis:local:sarapis_FICTIF_0450822X
 isMemberOf: esco:admin:CAHIER_TEXTE:local:FICTIF_0450822X
 isMemberOf: esco:Etablissements:FICTIF_0450822X:groupes_locaux:dossier:test2
@@ -557,6 +558,67 @@ personalTitle: M
 sambaLMPassword: 6DA60C3CDB36D52C8B7A880C7FA84D5B
 sambaNTPassword: 342EAFF243AC4F6C09D939EAE7A86C56
 uid: F1000uh7
+userPassword:: e1NTSEF9Nkp5L1pEWjYvcytqc0ZhK2lzYlMvaUEyWWhOR01UQXdNSFZvTnc9PQ==
+
+
+
+dn: uid=F1000uNT,ou=people,dc=esco-centre,dc=fr
+objectClass: ENTAuxEnseignant
+objectClass: ENTPerson
+objectClass: ESCOAddons
+objectClass: eduMember
+cn: BUKISA JEAN MARIE
+ENTPersonJointure: AC-DEMO$24381
+ENTPersonLogin: jean-marie.bukisa
+sn: BUKISA
+displayName: BUKISA JEAN-MARIE
+ENTAuxEnsCategoDiscipline: 31$GENIE THERMIQUE
+ENTAuxEnsClasses: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$514
+ENTAuxEnsGroupes: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$614-TMSE
+ENTAuxEnsGroupes: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$514-TMSE
+ENTAuxEnsGroupes: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$614-TFCA
+ENTAuxEnsGroupes: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$617 TMSB
+ENTAuxEnsGroupes: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$514-TFCA
+ENTAuxEnsMatiereEnseignEtab: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$TECHNOLOGIE 1
+ENTAuxEnsMatiereEnseignEtab: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$TP - TECHNO
+ENTAuxEnsMEF: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$24722704310$2NDPRO TECHN. MAINT. SYST.ENERG.CLIMATIQ
+ENTAuxEnsMEF: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$24725509310$2NDPRO TECHNIC. FROID CONDITIONNEMT AIR
+ENTAuxEnsMEF: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$24722704320$1ERPRO TECHN. MAINT. SYST.ENERG.CLIMATIQ
+ENTAuxEnsMEF: ENTStructureSIREN=00000000000001,ou=structures,dc=esco-centre,dc=fr$24725509320$1ERPRO TECHNIC. FROID CONDITIONNEMT AIR
+givenName: JEAN-MARIE
+isMemberOf: esco:Etablissements:FICTIF_0450822X:Profs
+isMemberOf: esco:Etablissements:FICTIF_0450822X:BAC PRO 3 ANS 2NDE PRO (OU 1ERE ANNEE):Profs_514
+isMemberOf: esco:Etablissements:FICTIF_0450822X:Enseignements:TECHNOLOGIE 1
+isMemberOf: esco:Etablissements:FICTIF_0450822X:Enseignements:TP - TECHNO
+isMemberOf: esco:Etablissements:FICTIF_0450822X:Tous_FICTIF
+isMemberOf: coll:Applications:GRR:FICTIF_0450800
+isMemberOf: esco:Applications:Cahier_de_texte:FICTIF_0450822X
+isMemberOf: esco:Applications:Espace_Moodle:FICTIF_0450822X
+isMemberOf: esco:Inter_etablissements:Manuels_numeriques:Local
+isMemberOf: esco:Applications:Esidoc:FICTIF_0450822X
+isMemberOf: esco:Applications:Ressources_Editoriales:generation_5:FICTIF_0450822X
+isMemberOf: esco:Etablissements:FICTIF_0450822X:groupes_locaux:Univ
+isMemberOf: esco:admin:local:admin_FICTIF_0450822X
+isMemberOf: esco:admin:Listes_Diffusion:local:FICTIF_0450822X
+isMemberOf: esco:admin:CAHIER_TEXTE:local:FICTIF_0450822X
+isMemberOf: esco:Applications:Indicateurs:FICTIF_0450822X
+isMemberOf: esco:Applications:GLPI:FICTIF_0450822X
+isMemberOf: esco:admin:sarapis:local:sarapis_FICTIF_0450822X
+isMemberOf: esco:Applications:Pronote:FICTIF_0450822X
+isMemberOf: esco:Applications:Espaces_stockage:SSO_samba:FICTIF_0450822X
+isMemberOf: esco:Applications:Ressources_Editoriales:mondesk:FICTIF_0450822X
+isMemberOf: esco:Etablissements:FICTIF_0450822X:groupes_locaux:MonStageEnLigne
+isMemberOf: esco:Applications:Listes_Diffusion:FICTIF_0450822X
+isMemberOf: esco:Applications:OBII:FICTIF_0450822X
+isMemberOf: esco:Applications:SACoche:FICTIF_0450822X
+isMemberOf: esco:Applications:Folios:FICTIF_0450822X
+isMemberOf: esco:admin:Publication_contenus:FICTIF_0450822X:MANAGER
+isMemberOf: esco:Applications:Ressources_Editoriales:madmagz:FICTIF_0450822X
+mail: BUKISA@demo-orleans-tours.fr
+personalTitle: M
+sambaLMPassword: 6DA60C3CDB36D52C8B7A880C7FA84D5B
+sambaNTPassword: 342EAFF243AC4F6C09D939EAE7A86C56
+uid: F1000uNT
 userPassword:: e1NTSEF9Nkp5L1pEWjYvcytqc0ZhK2lzYlMvaUEyWWhOR01UQXdNSFZvTnc9PQ==
 
 

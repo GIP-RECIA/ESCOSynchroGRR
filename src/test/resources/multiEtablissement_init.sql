@@ -12,9 +12,11 @@ delete from grr_j_site_area;
 delete from grr_j_user_room;
 delete from grr_j_mailuser_room;
 delete from grr_etablissement_regroupement;
+delete from grr_j_useradmin_etablissement;
 
 commit ;
 INSERT INTO grr_utilisateurs (login, nom, prenom, password, email, statut, etat, default_site, default_area, default_etablissement, default_room, default_style, default_list_type, default_language, source) VALUES('F08001j5', 'Juliana', 'FLORENCE', '', 'FLORENCE.Juliana@domaine.fr', 'utilisateur', 'actif', 0, 0, 2, 0, '', '', '', 'ext');
+INSERT INTO grr_utilisateurs (login, nom, prenom, password, email, statut, etat, default_site, default_area, default_etablissement, default_room, default_style, default_list_type, default_language, source) VALUES('F1000ugr', 'F1000ugr', 'F1000ugr', '', 'F1000ugr@domaine.fr', 'utilisateur', 'actif', 0, 0, 2, 0, '', '', '', 'ext');
 INSERT INTO grr_etablissement (`id`,`code`, `shortname`, `name`, `codepostal`, `adresse`, `ville`) VALUES ('1','0450822X', '0450822X', 'LGT-JACQUES COEUR-ac-ORL._TOURS', '18026', 'Test adresse', 'BOURGES CEDEX');
 INSERT INTO grr_etablissement (`id`,`code`, `shortname`, `name`, `codepostal`, `adresse`, `ville`) VALUES ('3','0290009C', '0290009C', 'LGT-0290009C 0290009C', '18026', '0290009C adresse', '0290009C CEDEX');
 INSERT INTO grr_etablissement (`id`,`code`, `shortname`, `name`, `codepostal`, `adresse`, `ville`) VALUES ('2','0180007A', 'LGT-JACQUES COEUR-ac-ORL._TOUR', 'LGT-JACQUES COEUR-ac-ORL._TOURS', '18026', 'Test adresse', 'BOURGES CEDEX');
@@ -30,6 +32,8 @@ INSERT INTO grr_area (`id`,`area_name`, `access`, `order_display`, `ip_adr`, `mo
 INSERT INTO grr_room (`id`,`area_id`, `room_name`, `description`, `capacity`, `max_booking`, `statut_room`, `show_fic_room`, `picture_room`, `comment_room`, `show_comment`, `delais_max_resa_room`, `delais_min_resa_room`, `allow_action_in_past`, `dont_allow_modify`, `order_display`, `delais_option_reservation`, `type_affichage_reser`, `moderate`, `qui_peut_reserver_pour`, `active_ressource_empruntee`, `who_can_see`, `room_warning`) VALUES ('1',1, 'Salle du conseil', 'Salle du conseil du lycée Fictif', 0, -1, '1', 'n', '', '', 'n', -1, 0, 'n', 'n', 0, 0, 0, 0, '5', 'n', 0, '');
 INSERT INTO grr_j_etablissement_site (`id_site`,`id_etablissement`) VALUES ('1','1');
 INSERT INTO grr_j_user_etablissement (`id_etablissement`,`login`) VALUES ('1','F08001j5');
+INSERT INTO grr_j_user_etablissement (`id_etablissement`,`login`) VALUES ('1','F1000ugr');
+INSERT INTO grr_j_useradmin_etablissement (`id_etablissement`,`login`) VALUES ('3','F1000ugr');
 INSERT INTO grr_j_user_area (`id_area`,`login`) VALUES ('1','F08001j5');
 INSERT INTO grr_j_site_area (`id_area`,`id_site`) VALUES ('1','1');
 INSERT INTO grr_j_user_room (`id_room`,`login`) VALUES ('1','F08001j5');

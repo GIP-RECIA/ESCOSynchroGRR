@@ -36,7 +36,7 @@ public class BatchTest {
 	public void misAjourPersonnes() throws Exception {
  		JobExecution misAjourPersonnes = jobLauncherTestUtils.launchStep("misAjourPersonnes");
 		Assert.assertEquals(BatchStatus.COMPLETED, misAjourPersonnes.getStatus());
-		Assert.assertEquals(5, misAjourPersonnes.getStepExecutions().iterator().next().getReadCount());
+		Assert.assertEquals(6, misAjourPersonnes.getStepExecutions().iterator().next().getReadCount());
 		Assert.assertEquals(5, misAjourPersonnes.getStepExecutions().iterator().next().getWriteCount());
 	}
 
@@ -46,7 +46,7 @@ public class BatchTest {
 
 		JobExecution suppressionComptesAbsentsLDAP = jobLauncherTestUtils.launchStep("suppressionComptesAbsentsLDAP");
 		Assert.assertEquals(BatchStatus.COMPLETED, suppressionComptesAbsentsLDAP.getStatus());
-		Assert.assertEquals(2, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getReadCount());
+		Assert.assertEquals(3, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getReadCount());
 		Assert.assertEquals(1, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getWriteCount());
 	}
 
@@ -71,5 +71,20 @@ public class BatchTest {
 		Assert.assertEquals(1, nettoyageLog.getStepExecutions().iterator().next().getWriteCount());
 
 	}
+
+
+	@Test
+	@Sql("/multiEtablissement_init.sql")
+	public void endBatch() throws Exception {
+		JobExecution endBatch = jobLauncherTestUtils.launchStep("endBatch");
+		Assert.assertEquals(BatchStatus.COMPLETED, endBatch.getStatus());
+	}
+
+/*	@Test
+	@Sql("/multiEtablissement_init.sql")
+	public void launchJob() throws Exception {
+		JobExecution launchJob = jobLauncherTestUtils.launchJob();
+		Assert.assertEquals(BatchStatus.COMPLETED, launchJob.getStatus());
+	}*/
 
 }
