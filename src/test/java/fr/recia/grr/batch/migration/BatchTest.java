@@ -36,8 +36,8 @@ public class BatchTest {
 	public void misAjourPersonnes() throws Exception {
  		JobExecution misAjourPersonnes = jobLauncherTestUtils.launchStep("misAjourPersonnes");
 		Assert.assertEquals(BatchStatus.COMPLETED, misAjourPersonnes.getStatus());
-		Assert.assertEquals(6, misAjourPersonnes.getStepExecutions().iterator().next().getReadCount());
-		Assert.assertEquals(5, misAjourPersonnes.getStepExecutions().iterator().next().getWriteCount());
+		Assert.assertEquals(9, misAjourPersonnes.getStepExecutions().iterator().next().getReadCount());
+		Assert.assertEquals(7, misAjourPersonnes.getStepExecutions().iterator().next().getWriteCount());
 	}
 
 	@Test

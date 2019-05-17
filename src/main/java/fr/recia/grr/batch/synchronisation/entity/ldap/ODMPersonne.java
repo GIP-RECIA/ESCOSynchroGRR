@@ -49,6 +49,9 @@ public final class ODMPersonne {
 	@Attribute(name = "ESCOUAIRattachement")
 	private String defaultEtablissement;
 
+	@Attribute(name = "ESCOUAICourant")
+	private String defaultEtablissement2;
+
 	/*
 	 * ===============================================
 	 * Constructeurs de la classe
@@ -143,6 +146,13 @@ public final class ODMPersonne {
 				'}';
 	}
 
+	public String getDefaultEtablissement2() {
+		return defaultEtablissement2;
+	}
+
+	public void setDefaultEtablissement2(String defaultEtablissement2) {
+		this.defaultEtablissement2 = defaultEtablissement2;
+	}
 
 	public String getUid() {
 		return uid;

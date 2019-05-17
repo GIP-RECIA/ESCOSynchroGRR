@@ -44,6 +44,9 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
     @Value("${statutAdministrateur}")
     private String statutAdministrateur;
 
+    @Value("${etablissementPrincipal2}")
+    private String etablissementPrincipal2;
+
     @Value("${statutAdminEtablissement}")
     private String statutAdminEtablissement;
 
@@ -88,6 +91,31 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
                 log.info("Detection d'un établissement par defaut : ".concat(matcher.group(1)));
             }
         }
+        if (odmPpersonne.getDefaultEtablissement()==null && odmPpersonne.getDefaultEtablissement2()!=null){
+            log.info("ESCOUAIRattachement  est null : Utilisation de  ESCOUAICourant ");
+            odmPpersonne.setDefaultEtablissement(odmPpersonne.getDefaultEtablissement2());
+        }
+        if (odmPpersonne.getDefaultEtablissement()==null && odmPpersonne.getDefaultEtablissement2()==null){
+            log.info("ESCOUAIRattachement et ESCOUAICourant est null : Utilisation de la regex ".concat(etablissementPrincipal2));
+            //RG-4	Etablissement principal de l’utilisateur
+            Pattern p6 = Pattern.compile(etablissementPrincipal2);
+            for (String s:odmPpersonne.getIsMemberOf()) {
+                Matcher matcher = p6.matcher(s);
+                while (matcher.find()) {
+                    if (odmPpersonne.getDefaultEtablissement()==null){
+                        odmPpersonne.setDefaultEtablissement(matcher.group(1));
+                        log.info("Detection d'un établissement par defaut dans la regex : ".concat(matcher.group(1)));
+                    }
+                }
+                if (odmPpersonne.getDefaultEtablissement()!=null){
+                    break;
+                }
+            }
+        }
+
+
+
+
         if (odmPpersonne.getDefaultEtablissement()==null){
             throw new BatchSyncroException("odmPersonne.getDefaultEtablissement est null");
         }
