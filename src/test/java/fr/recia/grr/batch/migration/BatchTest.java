@@ -24,7 +24,7 @@ public class BatchTest {
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void misAjourEtablissement() throws Exception {
+	public void misAjourEtablissement()  {
  		JobExecution misAjourEtablissement = jobLauncherTestUtils.launchStep("misAjourEtablissement");
 		Assert.assertEquals(BatchStatus.COMPLETED, misAjourEtablissement.getStatus());
 		Assert.assertEquals(5, misAjourEtablissement.getStepExecutions().iterator().next().getReadCount());
@@ -33,7 +33,7 @@ public class BatchTest {
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void misAjourPersonnes() throws Exception {
+	public void misAjourPersonnes()  {
  		JobExecution misAjourPersonnes = jobLauncherTestUtils.launchStep("misAjourPersonnes");
 		Assert.assertEquals(BatchStatus.COMPLETED, misAjourPersonnes.getStatus());
 		Assert.assertEquals(9, misAjourPersonnes.getStepExecutions().iterator().next().getReadCount());
@@ -42,7 +42,7 @@ public class BatchTest {
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void suppressionComptesAbsentsLDAP() throws Exception {
+	public void suppressionComptesAbsentsLDAP()  {
 
 		JobExecution suppressionComptesAbsentsLDAP = jobLauncherTestUtils.launchStep("suppressionComptesAbsentsLDAP");
 		Assert.assertEquals(BatchStatus.COMPLETED, suppressionComptesAbsentsLDAP.getStatus());
@@ -52,7 +52,7 @@ public class BatchTest {
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void suppressionReservationAnciennes() throws Exception {
+	public void suppressionReservationAnciennes()  {
 		/*IDatabaseConnection dconnection = new DatabaseConnection(dataSource.getConnection());
 		IDataSet dataSet = dconnection.createDataSet();
 		FlatXmlDataSet.write(dataSet, new FileOutputStream("full.xml"));
@@ -64,7 +64,7 @@ public class BatchTest {
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void nettoyageLog() throws Exception {
+	public void nettoyageLog()  {
 
 		JobExecution nettoyageLog = jobLauncherTestUtils.launchStep("nettoyageLog");
 		Assert.assertEquals(BatchStatus.COMPLETED, nettoyageLog.getStatus());
@@ -75,7 +75,7 @@ public class BatchTest {
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void endBatch() throws Exception {
+	public void endBatch()  {
 		JobExecution endBatch = jobLauncherTestUtils.launchStep("endBatch");
 		Assert.assertEquals(BatchStatus.COMPLETED, endBatch.getStatus());
 	}

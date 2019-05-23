@@ -25,7 +25,7 @@ public class BatchTestMigration {
 	
 	@Test
 	@Sql("/multiEtablissement_init.sql")
-	public void testMigration() throws Exception {
+	public void testMigration() {
 
 		JobExecution migrationRoom = jobLauncherTestUtils.launchStep("migrationRoom");
 		Assert.assertEquals(BatchStatus.COMPLETED, migrationRoom.getStatus());
