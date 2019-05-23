@@ -130,6 +130,15 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.4</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/fr/recia/grr/batch/migration/*</exclude>
+                        <exclude>**/fr/recia/grr/batch/synchronisation/*</exclude>
+                        <exclude>**/fr/recia/grr/batch/config/*</exclude>
+                        <exclude>**/fr/recia/grr/ConfigurationDataSource*</exclude>
+                        <exclude>**/fr/recia/grr/ConfigurationMigration*</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>default-prepare-agent</id>
