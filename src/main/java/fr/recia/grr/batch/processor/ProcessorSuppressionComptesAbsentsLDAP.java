@@ -2,7 +2,7 @@ package fr.recia.grr.batch.processor;
 
 
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
-import fr.recia.grr.batch.synchronisation.repository.ldap.IPersonneRepository;
+import fr.recia.grr.batch.synchronisation.repository.ldap.personne.IPersonneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;

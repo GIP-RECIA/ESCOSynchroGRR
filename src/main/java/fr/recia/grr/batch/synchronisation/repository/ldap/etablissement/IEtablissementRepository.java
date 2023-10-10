@@ -1,4 +1,4 @@
-package fr.recia.grr.batch.synchronisation.repository.ldap;
+package fr.recia.grr.batch.synchronisation.repository.ldap.etablissement;
 
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
 import org.springframework.data.ldap.repository.LdapRepository;

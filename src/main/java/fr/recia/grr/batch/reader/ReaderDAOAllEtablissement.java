@@ -1,7 +1,7 @@
 package fr.recia.grr.batch.reader;
 
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
-import fr.recia.grr.batch.synchronisation.repository.ldap.IEtablissementRepository;
+import fr.recia.grr.batch.synchronisation.repository.ldap.etablissement.IEtablissementRepository;
 import fr.recia.grr.utils.DateBatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

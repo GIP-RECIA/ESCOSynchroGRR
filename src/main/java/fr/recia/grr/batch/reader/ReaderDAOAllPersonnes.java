@@ -1,7 +1,7 @@
 package fr.recia.grr.batch.reader;
 
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
-import fr.recia.grr.batch.synchronisation.repository.ldap.IPersonneRepository;
+import fr.recia.grr.batch.synchronisation.repository.ldap.personne.IPersonneRepository;
 import fr.recia.grr.utils.DateBatch;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;

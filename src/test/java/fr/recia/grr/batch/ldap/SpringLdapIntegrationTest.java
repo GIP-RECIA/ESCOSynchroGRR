@@ -2,8 +2,8 @@ package fr.recia.grr.batch.ldap;
 
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
-import fr.recia.grr.batch.synchronisation.repository.ldap.IEtablissementRepository;
-import fr.recia.grr.batch.synchronisation.repository.ldap.IPersonneRepository;
+import fr.recia.grr.batch.synchronisation.repository.ldap.etablissement.IEtablissementRepository;
+import fr.recia.grr.batch.synchronisation.repository.ldap.personne.IPersonneRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
