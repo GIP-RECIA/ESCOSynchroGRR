@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ProcessorSuppressionComptesAbsentsLDAP implements ItemProcessor<String,String> {
 
@@ -23,6 +25,8 @@ public class ProcessorSuppressionComptesAbsentsLDAP implements ItemProcessor<Str
 	@Autowired
 	private IPersonneRepository personneRepository;
 
+	private Set<String> personnesUID;
+
 
 	/*
 	 * ===============================================
@@ -34,15 +38,23 @@ public class ProcessorSuppressionComptesAbsentsLDAP implements ItemProcessor<Str
 
 	@Override
 	public String process(String loginPersonne) throws Exception {
-		log.info("Debut du Processor SuppressionComptesAbsentsLDAP");
-		log.info("Recherche si {} est present dans le ldap",loginPersonne);
 
-		Optional<ODMPersonne> existPersonne = personneRepository.findByUid(loginPersonne);
-		if (!existPersonne.isPresent()){
-			return loginPersonne;
-		}else {
-			return null;
+		log.info("Debut du Processor SuppressionComptesAbsentsLDAP");
+
+		if(personnesUID == null){
+			personnesUID = new HashSet<>();
+			log.info("Récupération de la liste de toutes les personnes du LDAP");
+			List<ODMPersonne> personnes = personneRepository.findAll();
+			for(ODMPersonne personne : personnes){
+				personnesUID.add(personne.getUid());
+			}
 		}
+
+		log.info("Recherche si {} est present dans le ldap",loginPersonne);
+		if(personnesUID.contains(loginPersonne)){
+			return loginPersonne;
+		}
+		return null;
 
 	}
 
