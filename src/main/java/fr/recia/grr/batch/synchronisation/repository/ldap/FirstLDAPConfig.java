@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.ldap.repository.config.EnableLdapRepositories;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
 
+@Profile("!test")
 @Configuration
 @EnableLdapRepositories(basePackages = "fr.recia.grr.batch.synchronisation.repository.ldap.etablissement", ldapTemplateRef = "ldapTemplate1")
 public class FirstLDAPConfig {
