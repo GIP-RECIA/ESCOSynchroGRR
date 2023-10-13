@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "grr_entry_moderate")
-public class GrrEntryModerate extends GrrEntry implements Serializable {
+public class GrrEntryModerate implements Serializable {
 
 
 
@@ -27,6 +27,14 @@ public class GrrEntryModerate extends GrrEntry implements Serializable {
     @JoinColumn(name = "room_id")
     private GrrRoom room_id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "repeat_id")
+    private GrrRepeat reservationRepeat;
+
+    @Column(name = "end_time")
+    private long end_time;
+
+
 
     /*
      * ===============================================
@@ -36,7 +44,7 @@ public class GrrEntryModerate extends GrrEntry implements Serializable {
 
 
     public GrrEntryModerate() {
-        super();
+
     }
 
 
@@ -46,35 +54,44 @@ public class GrrEntryModerate extends GrrEntry implements Serializable {
      * ===============================================
      */
 
-    @Override
     public Integer getId() {
         return id;
     }
 
-    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
-    @Override
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    @Override
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
-    @Override
     public GrrRoom getRoom_id() {
         return room_id;
     }
 
-    @Override
     public void setRoom_id(GrrRoom room_id) {
         this.room_id = room_id;
     }
 
+    public GrrRepeat getReservationRepeat() {
+        return reservationRepeat;
+    }
+
+    public void setReservationRepeat(GrrRepeat reservationRepeat) {
+        this.reservationRepeat = reservationRepeat;
+    }
+
+    public long getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(long end_time) {
+        this.end_time = end_time;
+    }
 
 }

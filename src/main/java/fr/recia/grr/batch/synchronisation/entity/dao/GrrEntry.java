@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "grr_entry")
 public class GrrEntry implements Serializable {
 
@@ -27,6 +26,9 @@ public class GrrEntry implements Serializable {
 
     @Column(name = "timestamp")
     private LocalDateTime timestamp;
+
+    @Column(name = "end_time")
+    private long end_time;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repeat_id")
@@ -106,5 +108,11 @@ public class GrrEntry implements Serializable {
         this.room_id = room_id;
     }
 
+    public long getEnd_time() {
+        return end_time;
+    }
 
+    public void setEnd_time(long end_time) {
+        this.end_time = end_time;
+    }
 }

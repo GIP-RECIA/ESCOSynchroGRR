@@ -32,8 +32,8 @@ public interface IEntryRepositoryDAO extends JpaRepository<GrrEntry,Integer> {
      * @return les reservation anciennes depuis N jours
      */
     @Modifying
-    @Query("delete from GrrEntry r   where  r.timestamp <= :dateRequis ")
-    int deleteReservationAcienneNjour(@Param("dateRequis") LocalDateTime dateRequis);
+    @Query("delete from GrrEntry r   where  r.end_time <= :dateRequis ")
+    int deleteReservationAcienneNjour(@Param("dateRequis") long dateRequis);
 
 
 
