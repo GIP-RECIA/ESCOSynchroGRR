@@ -52,9 +52,9 @@ public class ProcessorSuppressionComptesAbsentsLDAP implements ItemProcessor<Str
 
 		log.info("Recherche si {} est present dans le ldap",loginPersonne);
 		if(personnesUID.contains(loginPersonne)){
-			return loginPersonne;
+			return null;
 		}
-		return null;
+		return loginPersonne;
 
 	}
 
