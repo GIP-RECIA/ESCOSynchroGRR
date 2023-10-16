@@ -63,7 +63,7 @@ public class GrrUtilisateurs implements Serializable {
     @Column(name = "source")
     private String source;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<GrrLog> log;
 
     @ManyToMany
@@ -203,7 +203,7 @@ public class GrrUtilisateurs implements Serializable {
      * @param nom
      */
     public void setNom(String nom) {
-        this.nom = nom;
+        this.nom = nom.length() > 30 ? nom.substring(0,30) : nom;
     }
 
 
@@ -221,7 +221,7 @@ public class GrrUtilisateurs implements Serializable {
      * @param prenom
      */
     public void setPrenom(String prenom) {
-        this.prenom = prenom;
+        this.prenom = prenom.length() > 30 ? prenom.substring(0,30) : prenom;
     }
 
 
