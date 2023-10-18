@@ -2,6 +2,7 @@ package fr.recia.grr.batch.synchronisation.repository.dao;
 
 import fr.recia.grr.batch.synchronisation.entity.dao.GrrUtilisateurs;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -24,11 +25,6 @@ public interface IUtilisateursRepositoryDAO extends JpaRepository<GrrUtilisateur
      */
     Optional<GrrUtilisateurs> findByLogin(String s);
 
-
-
-
-
-
     /**
      *
      * @param dateRequis
@@ -41,5 +37,16 @@ public interface IUtilisateursRepositoryDAO extends JpaRepository<GrrUtilisateur
     @Query("select  p from GrrUtilisateurs p join p.log log")
     Set<GrrUtilisateurs> allUsersConnecterPlus1fois();
 
+    @Modifying
+    @Query(value = "delete from grr_entry where create_by = :loginPersonne", nativeQuery = true)
+    void deleteReservationsUtilisateur(@Param("loginPersonne") String loginPersonne);
+
+    @Modifying
+    @Query(value = "delete from grr_entry_moderate where create_by = :loginPersonne", nativeQuery = true)
+    void deleteModerationsUtilisateur(@Param("loginPersonne") String loginPersonne);
+
+    @Modifying
+    @Query(value = "delete from grr_repeat where create_by = :loginPersonne", nativeQuery = true)
+    void deleteRepetitionsUtilisateur(@Param("loginPersonne") String loginPersonne);
 
 }

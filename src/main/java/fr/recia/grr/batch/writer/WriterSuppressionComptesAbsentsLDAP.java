@@ -34,10 +34,13 @@ public class WriterSuppressionComptesAbsentsLDAP implements ItemWriter<String> {
 
 	@Override
 	public void write(List<? extends String> personnes) throws Exception {
-
 		for (String loginPersonne : personnes) {
 			log.info("Supression de l'utilisateur en base GrrUtilisateurs : ".concat(loginPersonne));
 			personnesServiceDAO.deleteById(loginPersonne);
+			log.info("Suppression des réservations de l'utilisateur ".concat(loginPersonne));
+			personnesServiceDAO.deleteReservationsUtilisateur(loginPersonne);
+			personnesServiceDAO.deleteModerationsUtilisateur(loginPersonne);
+			personnesServiceDAO.deleteRepetitionsUtilisateur(loginPersonne);
 		}
 	}
 }
