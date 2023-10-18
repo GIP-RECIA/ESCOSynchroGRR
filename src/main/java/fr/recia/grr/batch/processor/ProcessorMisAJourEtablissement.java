@@ -155,8 +155,12 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
         return grrSite;
     }
 
-    private String sanitizeName(String name, int lenght){
-        return name.substring(0,(name.length() < lenght)? name.length():lenght);
+    private String sanitizeName(String name, int length){
+        String sanitizedName = name.substring(0, Math.min(name.length(), length));
+        if (sanitizedName.endsWith(" ")) {
+            return sanitizedName.substring(0, sanitizedName.length() - 1);
+        }
+        return sanitizedName;
     }
 
     private GrrEtablissement updateEtablissement(GrrEtablissement obj, ODMStructure odmStructure) {

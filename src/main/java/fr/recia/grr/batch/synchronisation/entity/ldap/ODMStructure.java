@@ -48,6 +48,9 @@ public class ODMStructure {
 	@Attribute(name = "street")
 	private String adresse;
 
+	@Attribute(name = "ENTStructureSIREN")
+	private String siren;
+
 	@Attribute(name = "ENTStructureUAI")
 	private String sitecode;
 
@@ -100,7 +103,7 @@ public class ODMStructure {
 	 */
 	public String getCode() {
 		if(code==null){
-			return this.nomLong;
+			return this.siren;
 		}
 		return code;
 	}
@@ -120,7 +123,7 @@ public class ODMStructure {
 	 * @return la proprieté nomCourt
 	 */
 	public String getNomCourt() {
-		return nomCourt;
+		return this.nomCourt.replace("$"," ");
 	}
 
 
@@ -138,7 +141,7 @@ public class ODMStructure {
 	 * @return la proprieté nomLong
 	 */
 	public String getNomLong() {
-		return nomLong;
+		return this.nomLong.replace("$"," ");
 	}
 
 
@@ -192,6 +195,9 @@ public class ODMStructure {
 	 * @return la proprieté adresse
 	 */
 	public String getAdresse() {
+		if(adresse == null){
+			return "";
+		}
 		return adresse;
 	}
 
@@ -204,7 +210,7 @@ public class ODMStructure {
 		this.adresse = adresse;
 	}
 	public String getSitename() {
-		return sitename;
+		return this.sitename.replace("$"," ");
 	}
 
 	public void setSitename(String sitename) {
@@ -212,11 +218,22 @@ public class ODMStructure {
 	}
 
 	public String getSitecode() {
+		if(sitecode==null){
+			return this.siren;
+		}
 		return sitecode;
 	}
 
 	public void setSitecode(String sitecode) {
 		this.sitecode = sitecode;
+	}
+
+	public String getSiren() {
+		return siren;
+	}
+
+	public void setSiren(String siren) {
+		this.siren = siren;
 	}
 
 	/*
