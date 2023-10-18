@@ -53,6 +53,9 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
     @Value("${statutSpecialGIPRecia}")
     private String statutSpecialGIPRecia;
 
+    @Value("${statutAdminGIPRecia}")
+    private String statutAdminGIPRecia;
+
     @Value("${etablissementPrincipal}")
     private String etablissementPrincipal;
 
@@ -137,6 +140,7 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         Pattern p3 = Pattern.compile(statutCodeEtablissement);
         Pattern p4 = Pattern.compile(statutAdminEtablissement);
         Pattern p7 = Pattern.compile(statutSpecialGIPRecia);
+        Pattern p8 = Pattern.compile(statutAdminGIPRecia);
 
         boolean gotEtabl = false;
         boolean isAdmin = false;
@@ -180,7 +184,14 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
 
             if (p7.matcher(s).matches()) {
                 codeEtablissement = "18450311800020";
-                log.info("Detection d'un cas spécial, code établissement : 18450311800020");
+                log.info("Detection d'un cas spécial, utilisateur GIP-Recia : 18450311800020");
+                isUtilisateur = true;
+            }
+
+            if (p8.matcher(s).matches()) {
+                log.info("Detection d'un cas spécial admin local GIP-Recia : 18450311800020 ");
+                codeEtablissement = "18450311800020";
+                isAdminEtablissement = true;
             }
 
             if(codeEtablissement !=null){
