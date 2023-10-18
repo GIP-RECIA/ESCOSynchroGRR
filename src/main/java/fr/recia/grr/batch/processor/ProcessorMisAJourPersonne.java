@@ -50,6 +50,8 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
     @Value("${statutAdminEtablissement}")
     private String statutAdminEtablissement;
 
+    @Value("${statutSpecialGIPRecia}")
+    private String statutSpecialGIPRecia;
 
     @Value("${etablissementPrincipal}")
     private String etablissementPrincipal;
@@ -113,9 +115,6 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
             }
         }
 
-
-
-
         if (odmPpersonne.getDefaultEtablissement()==null){
             throw new BatchSyncroException("odmPersonne.getDefaultEtablissement est null");
         }
@@ -137,6 +136,7 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         Pattern p2 = Pattern.compile(statutUtilisateur);
         Pattern p3 = Pattern.compile(statutCodeEtablissement);
         Pattern p4 = Pattern.compile(statutAdminEtablissement);
+        Pattern p7 = Pattern.compile(statutSpecialGIPRecia);
 
         boolean gotEtabl = false;
         boolean isAdmin = false;
@@ -162,21 +162,26 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
             boolean isUtilisateur = false;
             String codeEtablissement = null;
 
-
             if (p4.matcher(s).matches()) {
                 log.info("Detection d'un statut utilisateur :  admin:GRR:local ");
                 isAdminEtablissement = true;
             }
+
             if (p2.matcher(s).matches()) {
                 log.info("Detection d'un statut utilisateur : applications:GRR  ");
                 isUtilisateur =true;
             }
+
             Matcher matcher = p3.matcher(s);
             while (matcher.find()) {
                 codeEtablissement= matcher.group(2);
                 log.info("Detection d'un code établissement : ".concat(matcher.group(2)));
             }
 
+            if (p7.matcher(s).matches()) {
+                codeEtablissement = "18450311800020";
+                log.info("Detection d'un cas spécial, code établissement : 18450311800020");
+            }
 
             if(codeEtablissement !=null){
                 gotEtabl=true;
@@ -184,7 +189,7 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
                 Optional<GrrEtablissement> grrEtablissement = etablissementServiceDAO.findByCode(codeEtablissement);
                 boolean finalIsAdminEtablissement = isAdminEtablissement;
                 boolean finalIsUtilisateur = isUtilisateur;
-                 String finalCodeEtablissement = codeEtablissement;
+                String finalCodeEtablissement = codeEtablissement;
                 grrEtablissement.ifPresentOrElse(value -> {
 
                 // Recuperer letablissmeent principal - Effectuer également l’opération avec l’établissement principal associé à l’établissement en cours s’il existe (RG-7).
