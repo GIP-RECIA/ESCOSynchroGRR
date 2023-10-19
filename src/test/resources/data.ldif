@@ -144,7 +144,7 @@ objectClass: ENTCollLoc
 ENTCollLocLieuGeographique: Olivet
 ENTStructureJointure: ou=GIP-RECIA,ou=structures,dc=esco-centre,dc=fr
 ENTStructureNomCourant: GIP-RECIA
-ENTStructureSIREN: 18450311800020,ou=structures,dc=esco-centre,dc=fr
+ENTStructureSIREN: 18450311800020
 ou: GIP-RECIA
 ENTStructureTypeStruct: COLLECTIVITE LOCALE
 

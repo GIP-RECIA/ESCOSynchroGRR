@@ -47,7 +47,7 @@ public class BatchTest {
 		JobExecution suppressionComptesAbsentsLDAP = jobLauncherTestUtils.launchStep("suppressionComptesAbsentsLDAP");
 		Assert.assertEquals(BatchStatus.COMPLETED, suppressionComptesAbsentsLDAP.getStatus());
 		Assert.assertEquals(3, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getReadCount());
-		Assert.assertEquals(1, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getWriteCount());
+		Assert.assertEquals(2, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getWriteCount());
 	}
 
 	@Test
