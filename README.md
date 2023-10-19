@@ -47,21 +47,21 @@ config.properties
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | spring.datasource.username          | Nom d’utilisateur de la base multi Etablissement. Utilisé dans la migration et la synchronisation                                                                                       |
 | spring.datasource.password          | Mot de passe de la base multi Etablissement. Utilisé dans la migration et la synchronisation                                                                                            |
-| spring.jpa.database                 | Mettre la valeur "default"                                                                                                                                                              |
+| spring.jpa.database                 | Type de base de données. Laisser la valeur "default"                                                                                                                                    |
 | migration.datasource.url            | Url de la base source de la migration                                                                                                                                                   |
 | migration.datasource.username       | Nom d’utilisateur de la base source de la migration.                                                                                                                                    |
 | migration.datasource.password       | Mot de passe de la base source de la migration.                                                                                                                                         |
 | migration.cible.codeetablissement   | Utilisé pour le code de l’établissement cible dans le cas d’une migration (présent dans la base de données destination).                                                                |
-| spring.ldap.urls                    | URL du ldap ( ex : ldap://xxxxxx :389 )                                                                                                                                                 |
-| spring.ldap.base                    | Base du LDAP ( ex : dc=esco-centre,dc=fr )                                                                                                                                              |                                                                                                                                          
+| spring.ldap.urls                    | URL du ldap ( ex: ldap://xxxxxx:389 )                                                                                                                                                   |
+| spring.ldap.base                    | Base du LDAP ( ex: dc=esco-centre,dc=fr )                                                                                                                                               |                                                                                                                                          
 | spring.ldap.base_personnes          | Base de la branche des personnes                                                                                                                                                        |                                                                                                                                           
 | spring.ldap.base_etablissements     | Base de la branche des établissements                                                                                                                                                   |
 | spring.ldap.username                | Nom d’utilisateur du LDAP                                                                                                                                                               |
 | spring.ldap.password                | Mot de passe du LDAP                                                                                                                                                                    |
 | createSiteOnCreateEtab              | Si le paramètre du batch createSiteOnCreateEtab est égal à « true », il faut créer les enregistrements « Site » et « Area »                                                             |
 | derniereConnexionDepuisNJour        | Utilisé pour la suppression dans la base GRR des utilisateurs qui ne sont plus présents dans le LDAP et qui ne se sont pas connecté depuis plus de « n » jours (n= jourRequisConnexion) |
-| anneeReservationTropAncienne        | Utilisé pour la suppression dans la base GRR des réservations datant de plus de « n » années (n= anneeReservationTropAncienne )                                                         |
-| anneeViderLog                       | Utilisé pour la suppression dans la base GRR des enregistrements de log datant de plus de « n » années (n= anneeViderLog)                                                               |
+| anneeReservationTropAncienne        | Utilisé pour la suppression dans la base GRR des réservations datant de plus de «n» années (n= anneeReservationTropAncienne )                                                           |
+| anneeViderLog                       | Utilisé pour la suppression dans la base GRR des enregistrements de log datant de plus de «n» années (n= anneeViderLog)                                                                 |
 | nomDomainesParDefault               | Le nom des domaines par défaut est paramétré dans le fichier de propriétés du batch sous forme d’une chaine de caractères avec « \$ » comme séparateur (ex : « Salles$Materiel »)       |
 | typeDeDomaineParDefault             | Type de domaine par défaut correspond à la colonne ‘access’ dans grr_area.                                                                                                              |
 | emailParDefaut                      | Utilisé pour les comptes n'ayant pas de mail dans le ldap.                                                                                                                              |
@@ -69,6 +69,8 @@ config.properties
 | statutAdminEtablissement            | Pattern pour identifier un admin local                                                                                                                                                  |
 | statutUtilisateur                   | Pattern pour identifier un utilisateur                                                                                                                                                  |
 | statutCodeEtablissement             | Pattern pour identifier un établissement                                                                                                                                                |
+| statutSpeicalGIPRecia               | Pattern pour identifier un utilisateur du GIP Recia                                                                                                                                     |
+| statutAdminGIPRecia                 | Pattern pour identifier un admin local du GIP Recia                                                                                                                                     |            
 | etablissementPrincipal              | Pattern pour identifier un établissement principal                                                                                                                                      |
 | etablissementPrincipal2             | Pattern pour identifier un établissement secondaire                                                                                                                                     |
 | filter.ldap.structures              | Filtre LDAP pour récupérer les structures de GRR                                                                                                                                        |
@@ -80,14 +82,13 @@ dateDerniereMiseAJour.properties
 --------------------------------
 
 -   La date de dernier passage du batch est stockée dans un fichier texte qui
-    sera mis à jour à chaque exécution du batch
-    (dateDerniereMiseAJour.properties). Cette date permet de traiter les mises
-    en jour en mode « delta » en ne traitant que les entrées LDAP modifiées
-    depuis le dernier passage du Batch.
+    sera mis à jour à chaque exécution du batch (dateDerniereMiseAJour.properties).
+    Cette date permet de traiter les mises à jour en mode «delta» en ne traitant 
+    que les entrées LDAP modifiées depuis le dernier passage du Batch.
 
-| **Attribut dateDerniereMiseAJour.properties** | **Information**                                           |
-|-----------------------------------------------|-----------------------------------------------------------|
-| date                                          | Date de la dernière mise à jour Exemple : 20180218000000Z |
+| **Attribut dateDerniereMiseAJour.properties** | **Information**                                          |
+|-----------------------------------------------|----------------------------------------------------------|
+| date                                          | Date de la dernière mise à jour Exemple: 20180218000000Z |
 
 regroupementEtablissements.properties
 -------------------------------------
@@ -96,9 +97,9 @@ regroupementEtablissements.properties
     secondaires (regroupementEtablissements.properties) se font de la manière
     suivante : UAI_SECONDAIRE.principal=UAI_PRINCIPAL
 
-| **Attribut regroupementEtablissements.properties**            | **Valeur**                       | **Information**                                                                                   |
-|---------------------------------------------------------------|----------------------------------|---------------------------------------------------------------------------------------------------|
-| **\*.principal** \* est le code de l’établissement secondaire | **Code établissement principal** | Exemple : **0333333Y.principal**=**0360548A 0333333Y est le secondaire et 0360548A le principal** |
+| **Attribut regroupementEtablissements.properties**           | **Valeur**                       | **Information**                                                                                  |
+|--------------------------------------------------------------|----------------------------------|--------------------------------------------------------------------------------------------------|
+| **\*.principal** \*est le code de l’établissement secondaire | **Code établissement principal** | Exemple: **0333333Y.principal**=**0360548A 0333333Y est le secondaire et 0360548A le principal** |
 
 system.log
 ----------
@@ -106,10 +107,9 @@ system.log
 L’ensemble des actions effectuées par le batch sont tracées dans un fichier de
 log (system.log) présent dans le dossier Logs.
 
-Chaque fichier correspond à un lancement. De plus chaque ligne de ce fichier est
-horodatée.
+Chaque fichier correspond à un lancement. De plus chaque ligne de ce fichier est horodatée.
 
-Les informations présentes dans ce fichier sont :
+Les informations présentes dans ce fichier sont:
 
 -   Date de dernière mise à jour utilisée par le batch
 

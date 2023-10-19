@@ -38,11 +38,11 @@ public class ReservationAncienneTasklet implements Tasklet {
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         final long dateActuel = Instant.now().getEpochSecond();
         final long dateRequis = dateActuel - ((long) anneeReservationTropAncienne *365*24*60*60);
-        log.info("Suppression des réservations dans la table grr_entry");
+        log.info("Suppression des anciennes réservations dans la table grr_entry");
         int i = reservationServiceDAO.deleteReservationAcienneNjour(dateRequis);
-        log.info("Suppression des réservations dans la table grr_entry_moderate");
+        log.info("Suppression des anciennes réservations dans la table grr_entry_moderate");
         i += reservationModerateServiceDAO.deleteReservationAcienneNjour(dateRequis);
-        log.info("Suppression des réservations dans la table grr_repeat");
+        log.info("Suppression des anciennes réservations dans la table grr_repeat");
         i += repeatServiceDAO.deleteReservationAcienneNjour(dateRequis);
         chunkContext.getStepContext().getStepExecution().setWriteCount(i);
         return RepeatStatus.FINISHED;
