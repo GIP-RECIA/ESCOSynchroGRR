@@ -13,9 +13,9 @@ Généralités
 Prérequis
 ----------
 
-| Java  | java version "9.0.4" |
-|-------|----------------------|
-| Maven | Apache Maven 3.2.5   |
+Testé et qualifié avec :
+- Java 11
+- Maven 3.6.3
 
 Compilation du batch avec Maven
 ===============================
@@ -94,7 +94,7 @@ regroupementEtablissements.properties
 -------------------------------------
 
 -   Les relations entre les établissements principaux et les établissements
-    secondaires (regroupementEtablissements.properties) se font de la manière
+    secondaires (regroupementEtablissements.properties) se font de la manière
     suivante : UAI_SECONDAIRE.principal=UAI_PRINCIPAL
 
 | **Attribut regroupementEtablissements.properties**           | **Valeur**                       | **Information**                                                                                  |
@@ -124,15 +124,13 @@ Les informations présentes dans ce fichier sont:
 Initialisation des tables Spring Batch
 ======================================
 
-spring.batch.initialize-schema=always Permets d’initialiser les tables du batch
-automatiquement avec l’utilisateur courant.
+spring.batch.initialize-schema=always Permets d’initialiser les tables du batch automatiquement avec l’utilisateur courant.
 
 Si celui-ci ne possède pas les droits il faut alors lancer le script
 schema-mysql-spring-batch.sql avec un utilisateur les possédants et donner les
 droits de lecture/écriture a l’utilisateur utilisé dans le batch.
 
-spring.batch.initialize-schema=never Permets de désactiver l’initialisation des
-tables du batch automatiquement.
+spring.batch.initialize-schema=never Permets de désactiver l’initialisation des tables du batch automatiquement.
 
 Lancement du batch
 ==================
@@ -148,3 +146,5 @@ java -cp /chemin/vers/metier-1.0.jar -Dloader.path=/chemin/vers/dossier/config/ 
 | \-Dspring.profiles.active | Permet de choisir entre le synchro et la migration               |
 | \-Dloader.path            | Emplacements du répertoire contenant les fichiers de propriétés. |
 | \-cp                      | Emplacement du jar de l’application                              |
+
+Si jamais pas le script crash car pas assez de mémoire, on peut rajouter les flags `-Xmx2G -Xms2G` pour donner 2Go de mémoire (ce qui est normalement suffisant).
