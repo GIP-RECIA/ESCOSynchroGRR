@@ -17,7 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-@Profile("!test")
+@Profile("{ !test & BatchMigration }")
 @Configuration
 @EnableJpaRepositories(entityManagerFactoryRef = "migrationEntityManagerFactory", basePackages = {"fr.recia.grr.batch.migration.repository"})
 public class ConfigurationMigration {
