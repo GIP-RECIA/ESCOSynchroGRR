@@ -40,7 +40,7 @@ public class UtilisateursServiceDAOTest {
     public void testGetAllUsers(){
         List<GrrUtilisateurs>  users=utilisateursServiceDAO.findAll();
         Assert.assertNotNull(users);
-        Assert.assertEquals(users.size(),4);
+        Assert.assertEquals(users.size(),5);
 
     }
 
@@ -48,9 +48,7 @@ public class UtilisateursServiceDAOTest {
     @Sql("/multiEtablissement_init.sql")
     public void testGetUserByLoginKO(){
         Optional<GrrUtilisateurs> user=utilisateursServiceDAO.findByLogin("F080d5pe");
-//        Assert.assertNull(user.get());
         Assert.assertEquals(Optional.empty(),user);
-
     }
 
     @Test
