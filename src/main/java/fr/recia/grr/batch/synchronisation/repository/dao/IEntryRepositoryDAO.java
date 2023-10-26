@@ -23,8 +23,8 @@ public interface IEntryRepositoryDAO extends JpaRepository<GrrEntry,Integer> {
      * @param dateRequis
      * @return les reservation anciennes depuis N jours
      */
-    @Query("select  r from GrrEntry r   where  r.timestamp <= :dateRequis ")
-    Collection<GrrEntry> findReservationAcienneNjour(@Param("dateRequis") LocalDateTime dateRequis);
+    @Query("select  r from GrrEntry r   where  r.end_time <= :dateRequis ")
+    Collection<GrrEntry> findReservationAcienneNjour(@Param("dateRequis") long dateRequis);
 
     /**
      *
@@ -34,9 +34,6 @@ public interface IEntryRepositoryDAO extends JpaRepository<GrrEntry,Integer> {
     @Modifying
     @Query("delete from GrrEntry r   where  r.end_time <= :dateRequis ")
     int deleteReservationAcienneNjour(@Param("dateRequis") long dateRequis);
-
-
-
 
 
 }

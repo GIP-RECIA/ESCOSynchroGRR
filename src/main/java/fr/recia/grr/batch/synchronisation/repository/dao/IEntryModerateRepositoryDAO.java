@@ -17,16 +17,6 @@ import java.util.Collection;
 @Repository
 public interface IEntryModerateRepositoryDAO extends JpaRepository<GrrEntryModerate,Integer> {
 
-
-    /**
-     *
-     * @param dateRequis
-     * @return les reservation anciennes depuis N jours
-     */
-    @Query("select  r from GrrEntryModerate r   where  r.timestamp <= :dateRequis ")
-    Collection<GrrEntryModerate> findReservationAcienneNjour(@Param("dateRequis") LocalDateTime dateRequis);
-
-
     /**
      *
      * @param dateRequis
@@ -35,10 +25,6 @@ public interface IEntryModerateRepositoryDAO extends JpaRepository<GrrEntryModer
     @Modifying
     @Query("delete from GrrEntryModerate r   where  r.end_time <= :dateRequis ")
     int deleteReservationAcienneNjour(@Param("dateRequis") long dateRequis);
-
-
-
-
 
 
 }

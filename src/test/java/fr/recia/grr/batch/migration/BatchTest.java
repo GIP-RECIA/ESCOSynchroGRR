@@ -43,7 +43,6 @@ public class BatchTest {
 	@Test
 	@Sql("/multiEtablissement_init.sql")
 	public void suppressionComptesAbsentsLDAP()  {
-
 		JobExecution suppressionComptesAbsentsLDAP = jobLauncherTestUtils.launchStep("suppressionComptesAbsentsLDAP");
 		Assert.assertEquals(BatchStatus.COMPLETED, suppressionComptesAbsentsLDAP.getStatus());
 		Assert.assertEquals(3, suppressionComptesAbsentsLDAP.getStepExecutions().iterator().next().getReadCount());
@@ -53,23 +52,17 @@ public class BatchTest {
 	@Test
 	@Sql("/multiEtablissement_init.sql")
 	public void suppressionReservationAnciennes()  {
-		/*IDatabaseConnection dconnection = new DatabaseConnection(dataSource.getConnection());
-		IDataSet dataSet = dconnection.createDataSet();
-		FlatXmlDataSet.write(dataSet, new FileOutputStream("full.xml"));
-*/
 		JobExecution suppressionReservationAnciennes = jobLauncherTestUtils.launchStep("suppressionReservationAnciennes");
 		Assert.assertEquals(BatchStatus.COMPLETED, suppressionReservationAnciennes.getStatus());
- 		Assert.assertEquals(2, suppressionReservationAnciennes.getStepExecutions().iterator().next().getWriteCount());
+ 		Assert.assertEquals(4, suppressionReservationAnciennes.getStepExecutions().iterator().next().getWriteCount());
 	}
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
 	public void nettoyageLog()  {
-
 		JobExecution nettoyageLog = jobLauncherTestUtils.launchStep("nettoyageLog");
 		Assert.assertEquals(BatchStatus.COMPLETED, nettoyageLog.getStatus());
 		Assert.assertEquals(1, nettoyageLog.getStepExecutions().iterator().next().getWriteCount());
-
 	}
 
 
@@ -80,11 +73,5 @@ public class BatchTest {
 		Assert.assertEquals(BatchStatus.COMPLETED, endBatch.getStatus());
 	}
 
-/*	@Test
-	@Sql("/multiEtablissement_init.sql")
-	public void launchJob() throws Exception {
-		JobExecution launchJob = jobLauncherTestUtils.launchJob();
-		Assert.assertEquals(BatchStatus.COMPLETED, launchJob.getStatus());
-	}*/
 
 }

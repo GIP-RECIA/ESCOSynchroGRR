@@ -12,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -36,10 +37,7 @@ public class EntryServiceDAOTest {
     @Test
     @Sql("/multiEtablissement_init.sql")
     public void testFindReservationancienne60Jour(){
-        LocalDateTime dateActuel= LocalDateTime.now();
-        LocalDateTime dateRequis=dateActuel.minus(60, ChronoUnit.DAYS);
-
-        Collection<GrrEntry> pers=entryServiceDAO.findReservationAcienneNjour(dateRequis);
+        Collection<GrrEntry> pers=entryServiceDAO.findReservationAcienneNjour(Instant.now().getEpochSecond());
         Assert.assertEquals(pers.size(),2);
     }
 
