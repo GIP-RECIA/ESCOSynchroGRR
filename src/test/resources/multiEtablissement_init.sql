@@ -44,6 +44,8 @@ INSERT INTO grr_j_etablissement_site (`id_site`,`id_etablissement`) VALUES ('1',
 INSERT INTO grr_j_user_etablissement (`id_etablissement`,`login`) VALUES ('1','F08001j5');
 INSERT INTO grr_j_user_etablissement (`id_etablissement`,`login`) VALUES ('1','F1000ugr');
 INSERT INTO grr_j_useradmin_etablissement (`id_etablissement`,`login`) VALUES ('3','F1000ugr');
+INSERT INTO grr_j_useradmin_area(`login`,`id_area`) VALUES ('F08001j5','1');
+INSERT INTO grr_j_useradmin_area(`login`,`id_area`) VALUES ('F0000aaa','1');
 INSERT INTO grr_j_user_area (`id_area`,`login`) VALUES ('1','F08001j5');
 INSERT INTO grr_j_site_area (`id_area`,`id_site`) VALUES ('1','1');
 INSERT INTO grr_j_user_room (`id_room`,`login`) VALUES ('1','F08001j5');

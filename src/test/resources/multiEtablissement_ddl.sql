@@ -24,7 +24,7 @@ CREATE TABLE grr_j_user_area (login varchar(40) NOT NULL default '', id_area int
 DROP TABLE IF EXISTS grr_j_user_room;
 CREATE TABLE grr_j_user_room (login varchar(40) NOT NULL default '', id_room int(11) NOT NULL default '0', PRIMARY KEY  (login,id_room) );
 DROP TABLE IF EXISTS grr_j_useradmin_area;
-CREATE TABLE grr_j_useradmin_area (login varchar(40) NOT NULL default '', id_area int(11) NOT NULL default '0', PRIMARY KEY  (login,id_area) );
+CREATE TABLE grr_j_useradmin_area (login varchar(40) NOT NULL default '', id_area int(11) NOT NULL default '0');
 DROP TABLE IF EXISTS grr_log;
 CREATE TABLE grr_log (LOGIN varchar(40) NOT NULL default '', START datetime NOT NULL default '2016-01-01 00:00:00', SESSION_ID varchar(64) NOT NULL default '', REMOTE_ADDR varchar(16) NOT NULL default '', USER_AGENT varchar(255) NOT NULL default '', REFERER varchar(255) NOT NULL default '', AUTOCLOSE enum('0','1')  default '0', END datetime NOT NULL default '2016-01-01 00:00:00', PRIMARY KEY  (SESSION_ID,`START`));
 DROP TABLE IF EXISTS grr_area;

@@ -65,6 +65,14 @@ public class BatchTest {
 		Assert.assertEquals(1, nettoyageLog.getStepExecutions().iterator().next().getWriteCount());
 	}
 
+	@Test
+	@Sql("/multiEtablissement_init.sql")
+	public void suppressionAncienAdminArea()  {
+		JobExecution suppressionAncienAdminArea = jobLauncherTestUtils.launchStep("suppressionAncienAdminArea");
+		Assert.assertEquals(BatchStatus.COMPLETED, suppressionAncienAdminArea.getStatus());
+		Assert.assertEquals(1, suppressionAncienAdminArea.getStepExecutions().iterator().next().getWriteCount());
+	}
+
 
 	@Test
 	@Sql("/multiEtablissement_init.sql")
