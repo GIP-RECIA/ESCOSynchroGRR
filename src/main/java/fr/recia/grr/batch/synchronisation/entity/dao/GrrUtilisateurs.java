@@ -474,6 +474,10 @@ public class GrrUtilisateurs implements Serializable {
         this.grr_j_useradmin_area = grr_j_useradmin_area;
     }
 
+    public void remove_Grr_j_user_admin_area(GrrArea grrArea){
+        this.grr_j_useradmin_area.remove(grrArea);
+    }
+
     public Set<GrrRoom> getGrr_j_mailuser_room() {
         return grr_j_mailuser_room;
     }

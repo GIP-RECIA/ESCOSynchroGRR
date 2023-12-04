@@ -13,6 +13,7 @@ import fr.recia.grr.batch.synchronisation.entity.ldap.ODMPersonne;
 import fr.recia.grr.batch.synchronisation.entity.ldap.ODMStructure;
 import fr.recia.grr.batch.synchronisation.mapper.GrrUtilisateurRowMapper;
 import fr.recia.grr.batch.tasklet.ReservationAncienneTasklet;
+import fr.recia.grr.batch.tasklet.SupprimerAncienAdminAreaTasklet;
 import fr.recia.grr.batch.tasklet.ViderLogTasklet;
 import fr.recia.grr.batch.writer.WriterMisAjourEtablissement;
 import fr.recia.grr.batch.writer.WriterMisAjourPersonne;
@@ -104,6 +105,7 @@ public class BatchConfig {
                       Step suppressionComptesAbsentsLDAP,
                       Step suppressionReservationAnciennes,
                       Step nettoyageLog,
+                      Step suppressionAncienAdminArea,
                       Step endBatch)  {
 
 
@@ -114,6 +116,7 @@ public class BatchConfig {
                 .next(suppressionComptesAbsentsLDAP).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(suppressionReservationAnciennes).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(nettoyageLog).on(FlowExecutionStatus.FAILED.getName()).end()
+                .next(suppressionAncienAdminArea).on(FlowExecutionStatus.FAILED.getName()).end()
                 .next(endBatch)
                 .build().build();
     }
@@ -293,6 +296,27 @@ public class BatchConfig {
     public Step nettoyageLog(ExecutionListenerStep listener){
         return stepBuilderFactory.get("nettoyageLog")
                 .tasklet(viderLogTasklet())
+                .listener(listener)
+                .build();
+    }
+
+
+    /*
+     * ===============================================
+     * Step 6: Supprimer les anciens admins de domaines qui ont changé d'établissement
+     * ===============================================
+     */
+
+    @Bean
+    public SupprimerAncienAdminAreaTasklet supprimerAncienAdminAreaTasklet(){
+        return new SupprimerAncienAdminAreaTasklet();
+    }
+
+
+    @Bean
+    public Step suppressionAncienAdminArea(ExecutionListenerStep listener){
+        return stepBuilderFactory.get("suppressionAncienAdminArea")
+                .tasklet(supprimerAncienAdminAreaTasklet())
                 .listener(listener)
                 .build();
     }
