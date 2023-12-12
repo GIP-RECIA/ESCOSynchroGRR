@@ -4,11 +4,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@IdClass(GrrEtablissementRegroupementPK.class)
 @Table(name = "grr_etablissement_regroupement")
 public class GrrEtablissementRegroupement implements Serializable {
 
-    @Id
     @Column(name = "code_etablissement_principal", nullable = false)
     private String code_etablissement_principal;
 

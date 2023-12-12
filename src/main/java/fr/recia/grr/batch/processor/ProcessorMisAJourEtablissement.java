@@ -101,19 +101,17 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
             grrEtablissement.setGrr_j_etablissement_site(grrSites);
         }
 
-        /*
-        •	Retirer de la table grr_etablissement_regroupement les enregistrements concernant l’établissement.
-        */
+        // Retirer de la table grr_etablissement_regroupement les enregistrements concernant l’établissement.
         log.info("Traitement des regroupements  Principal : ".concat(String.valueOf(grrEtablissement.getEtablissements_principal().size())).concat(" Secondaires : ").concat(String.valueOf(grrEtablissement.getEtablissements_secondaire().size())));
 
-      //  grrEtablissement.removeAllEtablissements_principal();
-       // grrEtablissement.removeAllEtablissements_secondaire();
-        etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_principal(grrEtablissement.getCode());
-        etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_secondaire(grrEtablissement.getCode());
+        // TODD : suppression d'un établissement du regroupement
+        //grrEtablissement.removeAllEtablissements_principal();
+        //grrEtablissement.removeAllEtablissements_secondaire();
+        //etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_principal(grrEtablissement.getCode());
+        //etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_secondaire(grrEtablissement.getCode());
         grrEtablissement.getEtablissements_secondaire().clear();
         grrEtablissement.getEtablissements_principal().clear();
-        /*
-            Si l’établissement possède un établissement principal (RG-11), créer le regroupement entre ces 2 établissements dans la table grr_etablissement_regroupement         */
+
         Optional<String> codePrincipal = RegroupementEtablissementLoader.loadPrincipal(resourceLoader, grrEtablissement.getCode());
         codePrincipal.ifPresent(s -> grrEtablissement.getEtablissements_principal().add(new GrrEtablissementRegroupement(s,grrEtablissement.getCode())));
         codePrincipal.ifPresent(s -> log.info("l’établissement possède un établissement principal, Creation d'un regroupement - Code etablissement principal : " .concat(s)));
