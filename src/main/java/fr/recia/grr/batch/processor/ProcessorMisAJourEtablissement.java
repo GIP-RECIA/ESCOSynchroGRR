@@ -104,11 +104,15 @@ public class ProcessorMisAJourEtablissement implements ItemProcessor<ODMStructur
         // Retirer de la table grr_etablissement_regroupement les enregistrements concernant l’établissement.
         log.info("Traitement des regroupements  Principal : ".concat(String.valueOf(grrEtablissement.getEtablissements_principal().size())).concat(" Secondaires : ").concat(String.valueOf(grrEtablissement.getEtablissements_secondaire().size())));
 
-        // TODD : suppression d'un établissement du regroupement
         //grrEtablissement.removeAllEtablissements_principal();
         //grrEtablissement.removeAllEtablissements_secondaire();
         //etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_principal(grrEtablissement.getCode());
         //etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_secondaire(grrEtablissement.getCode());
+
+        for(GrrEtablissementRegroupement grrEtablissementRegroupement: grrEtablissement.getEtablissements_secondaire()){
+            etablissementRegroupementRepositoryDAO.deleteByCode_etablissement_secondaire(grrEtablissementRegroupement.getCode_etablissement_secondaire());
+        }
+
         grrEtablissement.getEtablissements_secondaire().clear();
         grrEtablissement.getEtablissements_principal().clear();
 
