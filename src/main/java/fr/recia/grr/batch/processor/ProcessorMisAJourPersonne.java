@@ -121,6 +121,12 @@ public class ProcessorMisAJourPersonne implements ItemProcessor<ODMPersonne, Grr
         if (odmPpersonne.getDefaultEtablissement()==null){
             throw new BatchSyncroException("odmPersonne.getDefaultEtablissement est null");
         }
+
+        if (odmPpersonne.getDefaultEtablissement().equals("GIP-RECIA")) {
+            odmPpersonne.setDefaultEtablissement("18450311800020");
+            log.info("Detection d'un cas spécial, utilisateur GIP-Recia : 18450311800020");
+        }
+
         user.ifPresentOrElse(
                 value -> log.info("Mise a jour de l'utilisateur ID : ".concat(String.valueOf(value.getLogin()))),
                 () -> log.info("Création de l'utilisateur")
